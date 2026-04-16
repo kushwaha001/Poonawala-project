@@ -1,0 +1,32 @@
+state,district,locality,rate_per_sqft,last_updated
+Maharashtra,Mumbai,Andheri West,12000,2024-04-01
+Maharashtra,Mumbai,Bandra West,18000,2024-04-01
+Maharashtra,Mumbai,Powai,14000,2024-04-01
+Maharashtra,Mumbai,Borivali,9000,2024-04-01
+Maharashtra,Mumbai,Dadar,15000,2024-04-01
+Delhi,Delhi,Dwarka,8500,2024-04-01
+Delhi,Delhi,Connaught Place,22000,2024-04-01
+Delhi,Delhi,Rohini,7500,2024-04-01
+Delhi,Delhi,Saket,11000,2024-04-01
+Delhi,Delhi,Vasant Kunj,10000,2024-04-01
+Karnataka,Bangalore,Whitefield,7500,2024-04-01
+Karnataka,Bangalore,Koramangala,12000,2024-04-01
+Karnataka,Bangalore,Electronic City,5500,2024-04-01
+Karnataka,Bangalore,Indiranagar,13000,2024-04-01
+Karnataka,Bangalore,Jayanagar,9500,2024-04-01
+Maharashtra,Pune,Hinjewadi,6500,2024-04-01
+Maharashtra,Pune,Kothrud,8500,2024-04-01
+Maharashtra,Pune,Viman Nagar,7500,2024-04-01
+Maharashtra,Pune,Baner,7000,2024-04-01
+Maharashtra,Pune,Wakad,6000,2024-04-01
+Maharashtra,Nagpur,Dharampeth,5500,2024-04-01
+Maharashtra,Nagpur,Sitabuldi,6000,2024-04-01
+Maharashtra,Nagpur,Sadar,5000,2024-04-01
+Maharashtra,Nagpur,Manish Nagar,4500,2024-04-01
+Rajasthan,Jaipur,Malviya Nagar,5000,2024-04-01
+Rajasthan,Jaipur,Vaishali Nagar,4500,2024-04-01
+Uttar Pradesh,Lucknow,Gomti Nagar,5500,2024-04-01
+Uttar Pradesh,Lucknow,Hazratganj,6500,2024-04-01
+Uttar Pradesh,Lucknow,Aliganj,4000,2024-04-01
+Uttar Pradesh,Gorakhpur,Civil Lines,3000,2024-04-01
+Uttar Pradesh,Gorakhpur,Golghar,2500,2024-04-01

@@ -1,0 +1,485 @@
+{
+  "andheri_2bhk": {
+    "market_value_range": [
+      15517355,
+      19146165
+    ],
+    "distress_value_range": [
+      11459116,
+      15627191
+    ],
+    "resale_potential_index": 71,
+    "estimated_time_to_sell_days": [
+      24,
+      53
+    ],
+    "confidence_score": 0.9,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+70.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-9.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+8.9%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "floor_factor",
+        "impact": "+2.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-1.1%",
+        "source_agent": "property_char"
+      }
+    ],
+    "risk_flags": [],
+    "explanation": "This apartment in Mumbai (Andheri West) is valued at \u20b915,517,355\u2013\u20b919,146,165 based on circle rate \u20b912,000/sqft with MCR 1.7x (Tier-1 standard market). Age factor 0.910 (8 years, apartment), config factor 0.989. RPI of 71 (Moderately liquid) yields 24\u201353 day sale window. Confidence: High (0.90).",
+    "agent_trace": {
+      "location_intel": {
+        "circle_rate_per_sqft": 12000,
+        "infra_score": 0.5443,
+        "neighborhood_quality": 0.9354,
+        "city_tier": 1,
+        "mcr": 1.7,
+        "micro_bucket": "standard",
+        "f_loc": 1.0889
+      },
+      "property_char": {
+        "f_age": 0.9096,
+        "f_cfg": 0.9893,
+        "f_floor": 1.02,
+        "delta": 0.1333,
+        "mode_area": 750
+      },
+      "market_dynamics": {
+        "active_listings_1km": 42,
+        "supply_density_score": 0.6456
+      },
+      "legal": {
+        "f_legal": 1.0,
+        "s_legal": 1.0
+      },
+      "valuation": {
+        "point_estimate": 17331760,
+        "uncertainty": 0.1047,
+        "q_data": 0.8857,
+        "q_agree": 0.8343,
+        "q_density": 0.9566
+      },
+      "liquidity": {
+        "rpi": 71,
+        "rpi_components": {
+          "s_infra": 0.5443,
+          "s_cfg": 0.7659,
+          "s_ds": 0.6456,
+          "s_legal": 1.0,
+          "s_age_liq": 0.7659,
+          "s_yield": 0.7428
+        }
+      },
+      "fraud": {
+        "flags": [],
+        "fraud_score": 0
+      }
+    }
+  },
+  "gorakhpur_warehouse": {
+    "market_value_range": [
+      7100494,
+      9748790
+    ],
+    "distress_value_range": [
+      4745714,
+      7201607
+    ],
+    "resale_potential_index": 41,
+    "estimated_time_to_sell_days": [
+      133,
+      297
+    ],
+    "confidence_score": 0.57,
+    "key_drivers": [
+      {
+        "factor": "age_depreciation",
+        "impact": "-24.7%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-8.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+5.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "legal_factor",
+        "impact": "-5.0%",
+        "source_agent": "legal"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "-2.5%",
+        "source_agent": "location_intel"
+      }
+    ],
+    "risk_flags": [],
+    "explanation": "This warehouse in Gorakhpur (Golghar) is valued at \u20b97,100,494\u2013\u20b99,748,790 based on circle rate \u20b92,500/sqft with MCR 1.05x (Tier-3 peripheral market). Age factor 0.753 (25 years, warehouse), config factor 0.920. RPI of 41 (Restricted liquidity) yields 133\u2013297 day sale window. Confidence: Low (0.57).",
+    "agent_trace": {
+      "location_intel": {
+        "circle_rate_per_sqft": 2500,
+        "infra_score": 0.1179,
+        "neighborhood_quality": 0.4682,
+        "city_tier": 3,
+        "mcr": 1.05,
+        "micro_bucket": "peripheral",
+        "f_loc": 0.9747
+      },
+      "property_char": {
+        "f_age": 0.7535,
+        "f_cfg": 0.92,
+        "f_floor": 1.0,
+        "delta": 1.0,
+        "mode_area": 2500
+      },
+      "market_dynamics": {
+        "active_listings_1km": 3,
+        "supply_density_score": 0.7788
+      },
+      "legal": {
+        "f_legal": 0.95,
+        "s_legal": 0.85
+      },
+      "valuation": {
+        "point_estimate": 8424642,
+        "uncertainty": 0.1572,
+        "q_data": 0.6,
+        "q_agree": 0.5353,
+        "q_density": 0.3526
+      },
+      "liquidity": {
+        "rpi": 41,
+        "rpi_components": {
+          "s_infra": 0.1179,
+          "s_cfg": 0.1353,
+          "s_ds": 0.7788,
+          "s_legal": 0.85,
+          "s_age_liq": 0.4346,
+          "s_yield": 0.5
+        }
+      },
+      "fraud": {
+        "flags": [],
+        "fraud_score": 0
+      }
+    }
+  },
+  "lucknow_disputed_plot": {
+    "market_value_range": [
+      11534437,
+      14578472
+    ],
+    "distress_value_range": [
+      7947074,
+      11101677
+    ],
+    "resale_potential_index": 50,
+    "estimated_time_to_sell_days": [
+      80,
+      178
+    ],
+    "confidence_score": 0.77,
+    "key_drivers": [
+      {
+        "factor": "legal_factor",
+        "impact": "-15.0%",
+        "source_agent": "legal"
+      },
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+10.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+7.5%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-1.6%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "+0.0%",
+        "source_agent": "property_char"
+      }
+    ],
+    "risk_flags": [
+      {
+        "flag": "title_disputed",
+        "severity": "high",
+        "source_agent": "legal"
+      }
+    ],
+    "explanation": "This plot in Lucknow (Gomti Nagar) is valued at \u20b911,534,437\u2013\u20b914,578,472 based on circle rate \u20b95,500/sqft with MCR 1.1x (Tier-2 peripheral market). Age factor 1.000 (0 years, plot), config factor 0.984. RPI of 50 (Restricted liquidity) yields 80\u2013178 day sale window. Confidence: Medium (0.77).",
+    "agent_trace": {
+      "location_intel": {
+        "circle_rate_per_sqft": 5500,
+        "infra_score": 0.2642,
+        "neighborhood_quality": 0.8937,
+        "city_tier": 2,
+        "mcr": 1.1,
+        "micro_bucket": "peripheral",
+        "f_loc": 1.0751
+      },
+      "property_char": {
+        "f_age": 1.0,
+        "f_cfg": 0.984,
+        "f_floor": 1.0,
+        "delta": 0.2,
+        "mode_area": 2000
+      },
+      "market_dynamics": {
+        "active_listings_1km": 8,
+        "supply_density_score": 0.5134
+      },
+      "legal": {
+        "f_legal": 0.85,
+        "s_legal": 0.4
+      },
+      "valuation": {
+        "point_estimate": 13056455,
+        "uncertainty": 0.1166,
+        "q_data": 0.7714,
+        "q_agree": 0.8286,
+        "q_density": 0.5588
+      },
+      "liquidity": {
+        "rpi": 50,
+        "rpi_components": {
+          "s_infra": 0.2642,
+          "s_cfg": 0.6703,
+          "s_ds": 0.5134,
+          "s_legal": 0.4,
+          "s_age_liq": 1.0,
+          "s_yield": 0.5
+        }
+      },
+      "fraud": {
+        "flags": [],
+        "fraud_score": 0
+      }
+    }
+  },
+  "bandra_old_building": {
+    "market_value_range": [
+      28830639,
+      37417454
+    ],
+    "distress_value_range": [
+      21217360,
+      30435259
+    ],
+    "resale_potential_index": 70,
+    "estimated_time_to_sell_days": [
+      24,
+      54
+    ],
+    "confidence_score": 0.79,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+120.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-27.5%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+5.8%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-0.8%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "legal_factor",
+        "impact": "+0.0%",
+        "source_agent": "legal"
+      }
+    ],
+    "risk_flags": [],
+    "explanation": "This apartment in Mumbai (Bandra West) is valued at \u20b928,830,639\u2013\u20b937,417,454 based on circle rate \u20b918,000/sqft with MCR 2.2x (Tier-1 prime market). Age factor 0.725 (45 years, apartment), config factor 0.992. RPI of 70 (Moderately liquid) yields 24\u201354 day sale window. Confidence: Medium (0.79).",
+    "agent_trace": {
+      "location_intel": {
+        "circle_rate_per_sqft": 18000,
+        "infra_score": 0.6623,
+        "neighborhood_quality": 0.9493,
+        "city_tier": 1,
+        "mcr": 2.2,
+        "micro_bucket": "prime",
+        "f_loc": 1.058
+      },
+      "property_char": {
+        "f_age": 0.7245,
+        "f_cfg": 0.992,
+        "f_floor": 1.0,
+        "delta": 0.1,
+        "mode_area": 1000
+      },
+      "market_dynamics": {
+        "active_listings_1km": 35,
+        "supply_density_score": 0.6945
+      },
+      "legal": {
+        "f_legal": 1.0,
+        "s_legal": 1.0
+      },
+      "valuation": {
+        "point_estimate": 33124046,
+        "uncertainty": 0.1296,
+        "q_data": 0.8286,
+        "q_agree": 0.5941,
+        "q_density": 0.9114
+      },
+      "liquidity": {
+        "rpi": 70,
+        "rpi_components": {
+          "s_infra": 0.6623,
+          "s_cfg": 0.8187,
+          "s_ds": 0.6945,
+          "s_legal": 1.0,
+          "s_age_liq": 0.2231,
+          "s_yield": 0.5
+        }
+      },
+      "fraud": {
+        "flags": [],
+        "fraud_score": 0
+      }
+    }
+  },
+  "pune_fraud_4bhk_400sqft": {
+    "market_value_range": [
+      3625684,
+      4844766
+    ],
+    "distress_value_range": [
+      2583029,
+      3814853
+    ],
+    "resale_potential_index": 60,
+    "estimated_time_to_sell_days": [
+      31,
+      68
+    ],
+    "confidence_score": 0.79,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+70.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-4.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+3.7%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-3.7%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "legal_factor",
+        "impact": "+0.0%",
+        "source_agent": "legal"
+      }
+    ],
+    "risk_flags": [
+      {
+        "flag": "config_area_mismatch",
+        "severity": "high",
+        "source_agent": "fraud"
+      }
+    ],
+    "explanation": "This apartment in Pune (Hinjewadi) is valued at \u20b93,625,684\u2013\u20b94,844,766 based on circle rate \u20b96,500/sqft with MCR 1.7x (Tier-1 standard market). Age factor 0.963 (3 years, apartment), config factor 0.960. RPI of 60 (Moderately liquid) yields 31\u201368 day sale window. Confidence: Medium (0.79).",
+    "agent_trace": {
+      "location_intel": {
+        "circle_rate_per_sqft": 6500,
+        "infra_score": 0.381,
+        "neighborhood_quality": 0.8604,
+        "city_tier": 1,
+        "mcr": 1.7,
+        "micro_bucket": "standard",
+        "f_loc": 1.0368
+      },
+      "property_char": {
+        "f_age": 0.9627,
+        "f_cfg": 0.96,
+        "f_floor": 1.0,
+        "delta": 0.5,
+        "mode_area": 800
+      },
+      "market_dynamics": {
+        "active_listings_1km": 30,
+        "supply_density_score": 0.7316
+      },
+      "legal": {
+        "f_legal": 1.0,
+        "s_legal": 1.0
+      },
+      "valuation": {
+        "point_estimate": 4235225,
+        "uncertainty": 0.1439,
+        "q_data": 0.7714,
+        "q_agree": 0.8617,
+        "q_density": 0.8734
+      },
+      "liquidity": {
+        "rpi": 60,
+        "rpi_components": {
+          "s_infra": 0.381,
+          "s_cfg": 0.3679,
+          "s_ds": 0.7316,
+          "s_legal": 1.0,
+          "s_age_liq": 0.9048,
+          "s_yield": 0.5
+        }
+      },
+      "fraud": {
+        "flags": [
+          {
+            "flag": "config_area_mismatch",
+            "severity": "high",
+            "explanation": "4BHK needs >= 960 sqft, got 400"
+          }
+        ],
+        "fraud_score": 0.5
+      }
+    }
+  }
+}

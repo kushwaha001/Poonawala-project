@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Prime Mumbai Apartment (Andheri West 2BHK) — §22 Worked Example",
+    "input": {
+      "address": "Andheri West, Mumbai",
+      "property_type": "residential",
+      "sub_type": "apartment",
+      "built_up_area_sqft": 850,
+      "age_years": 8,
+      "configuration": "2BHK",
+      "ownership": "freehold",
+      "title_clear": true,
+      "floor": 6,
+      "total_floors": 12,
+      "has_lift": true,
+      "occupancy": "rented",
+      "monthly_rent": 45000
+    },
+    "expected": {
+      "rpi_range": [60, 80],
+      "confidence_min": 0.70,
+      "has_fraud_flags": false,
+      "notes": "High-tier prime location, standard config, should get tight MV range and moderate-high RPI"
+    }
+  },
+  {
+    "name": "Tier-3 Warehouse (Gorakhpur industrial zone)",
+    "input": {
+      "address": "Golghar, Gorakhpur",
+      "property_type": "industrial",
+      "sub_type": "warehouse",
+      "built_up_area_sqft": 5000,
+      "age_years": 25
+    },
+    "expected": {
+      "rpi_range": [10, 40],
+      "confidence_min": 0.40,
+      "has_fraud_flags": false,
+      "notes": "Tier-3 warehouse: low RPI, wide uncertainty range, long time-to-sell"
+    }
+  },
+  {
+    "name": "Disputed-Title Plot (Lucknow)",
+    "input": {
+      "address": "Gomti Nagar, Lucknow",
+      "property_type": "residential",
+      "sub_type": "plot",
+      "built_up_area_sqft": 2400,
+      "age_years": 0,
+      "ownership": "freehold",
+      "title_clear": false,
+      "occupancy": "vacant"
+    },
+    "expected": {
+      "rpi_range": [15, 45],
+      "confidence_min": 0.30,
+      "has_fraud_flags": false,
+      "notes": "Disputed title should hammer both legal factor and RPI. Confidence drops."
+    }
+  },
+  {
+    "name": "Very Old Building in Good Location (Bandra, Mumbai)",
+    "input": {
+      "address": "Bandra West, Mumbai",
+      "property_type": "residential",
+      "sub_type": "apartment",
+      "built_up_area_sqft": 1100,
+      "age_years": 45,
+      "configuration": "3BHK",
+      "ownership": "freehold",
+      "title_clear": true,
+      "floor": 3,
+      "total_floors": 5,
+      "has_lift": false,
+      "occupancy": "self_occupied"
+    },
+    "expected": {
+      "rpi_range": [35, 65],
+      "confidence_min": 0.50,
+      "has_fraud_flags": false,
+      "notes": "Prime location vs very old building — interesting tradeoff. f_age hits hard but MCR/location boosts value."
+    }
+  },
+  {
+    "name": "Overstated-Size Input — Fraud Detection (4BHK in 400 sqft, Pune)",
+    "input": {
+      "address": "Hinjewadi, Pune",
+      "property_type": "residential",
+      "sub_type": "apartment",
+      "built_up_area_sqft": 400,
+      "age_years": 3,
+      "configuration": "4BHK",
+      "ownership": "freehold",
+      "title_clear": true,
+      "floor": 2,
+      "total_floors": 10,
+      "has_lift": true
+    },
+    "expected": {
+      "rpi_range": [30, 70],
+      "confidence_min": 0.30,
+      "has_fraud_flags": true,
+      "expected_flags": ["config_area_mismatch"],
+      "notes": "4BHK in 400 sqft is physically impossible — fraud agent must fire config_area_mismatch"
+    }
+  }
+]

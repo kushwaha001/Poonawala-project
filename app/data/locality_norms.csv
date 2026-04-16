@@ -1,0 +1,39 @@
+city,locality,sub_type,mean_area_sqft,std_area_sqft,mode_area_sqft
+Mumbai,Andheri West,apartment,800,200,750
+Mumbai,Andheri West,shop,350,150,300
+Mumbai,Bandra West,apartment,1100,350,1000
+Mumbai,Powai,apartment,950,250,900
+Mumbai,Borivali,apartment,700,180,650
+Mumbai,Dadar,apartment,650,150,600
+Mumbai,Bandra West,villa,2800,900,2500
+Mumbai,Powai,warehouse,4000,1200,3500
+Delhi,Dwarka,apartment,1100,300,1000
+Delhi,Connaught Place,office,1500,500,1200
+Delhi,Rohini,apartment,900,200,850
+Delhi,Saket,apartment,1200,350,1100
+Delhi,Vasant Kunj,apartment,1300,400,1200
+Delhi,Vasant Kunj,villa,2500,800,2200
+Delhi,Dwarka,plot,1800,600,1500
+Bangalore,Whitefield,apartment,1100,300,1000
+Bangalore,Koramangala,apartment,950,250,900
+Bangalore,Electronic City,apartment,1000,250,950
+Bangalore,Indiranagar,apartment,1000,300,950
+Bangalore,Whitefield,villa,2200,700,2000
+Bangalore,Jayanagar,plot,1500,500,1200
+Pune,Hinjewadi,apartment,850,200,800
+Pune,Kothrud,apartment,900,250,850
+Pune,Viman Nagar,apartment,950,250,900
+Pune,Baner,apartment,850,200,800
+Pune,Hinjewadi,warehouse,3500,1000,3000
+Nagpur,Dharampeth,apartment,1000,300,950
+Nagpur,Sitabuldi,shop,400,150,350
+Nagpur,Sadar,apartment,1100,350,1000
+Nagpur,Manish Nagar,warehouse,3000,1000,2500
+Nagpur,Dharampeth,villa,1800,500,1600
+Jaipur,Malviya Nagar,apartment,1100,300,1000
+Jaipur,Vaishali Nagar,villa,2000,600,1800
+Jaipur,Malviya Nagar,plot,1600,500,1400
+Lucknow,Gomti Nagar,apartment,1100,300,1000
+Lucknow,Hazratganj,shop,500,200,400
+Gorakhpur,Civil Lines,apartment,1200,400,1100
+Gorakhpur,Golghar,plot,2400,800,2000

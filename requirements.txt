@@ -1,0 +1,12 @@
+fastapi
+pydantic
+anthropic
+httpx
+rapidfuzz
+pandas
+pytest
+pytest-asyncio
+uvicorn
+beautifulsoup4
+python-dotenv
+numpy

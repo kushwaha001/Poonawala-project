@@ -1,0 +1,241 @@
+================================================================================
+  VIDEO PITCH SCRIPT — 4-5 Minute Version
+  AI Powered Collateral Valuation & Resale Liquidity Engine
+================================================================================
+
+TARGET DURATION: 4:30 minutes
+RECORDING TIPS:
+  - Screen-record with OBS Studio (free) or QuickTime (Mac built-in)
+  - Use split screen: you on camera (small) + screen demo (large)
+  - Or just voice-over with screen recording
+  - Record the Streamlit prototype demo as the visual
+  - Speak clearly, confidently, with energy
+  - Background: quiet room, good lighting
+
+
+================================================================================
+SEGMENT 1: THE HOOK (0:00 – 0:30)
+================================================================================
+
+[SHOW: Title slide or Streamlit app landing page]
+
+"Imagine you're a credit officer at Poonawalla Fincorp. A borrower walks
+in with a 2BHK apartment in Baner, Pune, asking for a 30 lakh loan
+against it. You need to answer two questions:
+
+What is this property actually worth? And if the borrower defaults...
+how fast can we sell it?
+
+Today, that answer takes 3-7 days and three different valuers might give
+you numbers that are 30% apart.
+
+We built a system that answers both questions in under 5 seconds, with
+full transparency, and zero cost."
+
+
+================================================================================
+SEGMENT 2: THE PROBLEM (0:30 – 1:15)
+================================================================================
+
+[SHOW: Problem slide with stats]
+
+"Poonawalla Fincorp's LAP book is 24% of a 25,000 crore AUM. Every
+percentage point of mispricing is 60 crore of exposure risk.
+
+Current approaches have three fundamental problems:
+
+First — they give you a POINT estimate. ₹1.2 crore. No uncertainty,
+no range, no audit trail. That's not good enough for a credit committee.
+
+Second — they tell you what it's WORTH, but not how EASILY you can
+sell it. Value without liquidity is half the picture.
+
+Third — they're opaque. A model says 1.2 crore, but WHY? Nobody knows.
+You can't defend it to an auditor or a regulator.
+
+We solve all three."
+
+
+================================================================================
+SEGMENT 3: THE SOLUTION — ARCHITECTURE (1:15 – 2:00)
+================================================================================
+
+[SHOW: Architecture diagram slide OR Streamlit app]
+
+"We built an 11-agent AI pipeline. Not a single model — eleven
+specialized agents that each handle one aspect of valuation.
+
+Here's how it works:
+
+First, the Input Normalizer geocodes the address.
+
+Then four agents run in parallel — Location Intelligence queries
+OpenStreetMap for every metro station, school, hospital, and mall
+within 3 kilometers. Property Characteristics calculates age
+depreciation. Market Dynamics assesses supply and demand. And Legal
+checks ownership clarity.
+
+These feed into the Valuation Agent — which uses a completely transparent
+formula. Circle rate times area times six adjustment factors. No LLM,
+no black box. Pure math.
+
+Then the Liquidity Agent computes the Resale Potential Index.
+
+The Fraud Agent runs 7 cross-checks — including an LLM that catches
+subtle anomalies like a 4BHK claimed in a 400 square foot apartment.
+
+And finally, the Synthesizer agent uses Claude to generate a human-
+readable explanation that a credit officer can actually understand."
+
+
+================================================================================
+SEGMENT 4: LIVE DEMO (2:00 – 3:15)
+================================================================================
+
+[SHOW: Streamlit prototype — actually type in values and show results]
+
+"Let me show you this live.
+
+[Type: Baner, Pune → Residential → Apartment → 850 sqft → 5 years →
+2BHK → Freehold → Clear title]
+
+Here's the output in real-time:
+
+Market value: 92 lakhs to 1.14 crores. Not a point estimate — a RANGE
+with 10.5% uncertainty band.
+
+Distress value: 68 to 93 lakhs. This is what you'd recover in a
+forced sale. The distress discount is 22.5% because the RPI is 72.
+
+Speaking of RPI — Resale Potential Index is 72 out of 100. That's
+'Moderately Liquid'. Expected sale time: 23 to 52 days.
+
+Confidence: 0.89 — that's 'High'. The system trusts its own estimate
+because it has good data on this locality.
+
+Now look at the drivers — MCR plus 70%, age depreciation minus 6%,
+micro-location plus 6.8%. Every number traces back to a specific agent
+and formula.
+
+No fraud flags. No risk flags. Clean collateral.
+
+[Now type: Hinjewadi, Pune → Apartment → 400 sqft → 4BHK]
+
+Watch what happens with fraud detection...
+
+BOOM — 'config_area_mismatch: HIGH severity. 4BHK needs at least 960
+sqft, got 400.' The system catches this immediately.
+
+[Now type: Golghar, Gorakhpur → Warehouse → 5000 sqft → 25 years]
+
+And here's a Tier-3 warehouse... RPI drops to 41. 'Restricted
+liquidity.' Time to sell: 133 to 297 days. Confidence drops to 0.57.
+The system is honestly saying 'I'm less sure about this one.'
+
+That's graceful degradation — not hallucination."
+
+
+================================================================================
+SEGMENT 5: WHY THIS IS BEST-IN-CLASS (3:15 – 3:50)
+================================================================================
+
+[SHOW: Comparison table slide]
+
+"What makes this best-in-class?
+
+Compared to manual valuation — we're 1000x faster.
+Compared to ML regression — we're completely explainable.
+Compared to both — we assess liquidity AND value together.
+
+11 agents. 7 LLM reasoning points. 7 fraud checks. 3 scenarios.
+4 layers of explainability. 47 unit tests. Zero cost.
+
+Every tool is free. Every data source is public. The LLM is free.
+This runs at zero marginal cost per valuation."
+
+
+================================================================================
+SEGMENT 6: POONAWALLA FIT + CLOSE (3:50 – 4:30)
+================================================================================
+
+[SHOW: Poonawalla LAP results slide]
+
+"We tested this on 6 realistic Poonawalla Fincorp LAP scenarios —
+a salaried IT professional in Pune, an MSME shopkeeper in Nagpur,
+a trader in Jaipur, a business owner in Mumbai, a small business
+in Gorakhpur, and an IT engineer in Bangalore.
+
+4 were approved. 2 were flagged for loan amount reduction — not rejected,
+just right-sized. That's exactly what a credit committee would do.
+
+Portfolio coverage ratio: 1.3x. Average RPI: 68. Average confidence: 0.85.
+
+This isn't a prototype. This is a working engine with an API, tests,
+and documentation.
+
+The winning mental model: we built a framework where location sets
+the base, property attributes adjust value, market forces define exit
+risk, and every output is transparent, range-based, and auditable.
+
+Thank you."
+
+[SHOW: Thank you slide with contact info]
+
+
+================================================================================
+RECORDING GUIDE — HOW TO MAKE THE VIDEO
+================================================================================
+
+OPTION 1: SCREEN RECORDING + VOICEOVER (Easiest, 30 min to make)
+  Tool: QuickTime (Mac) → File → New Screen Recording
+  1. Open Streamlit app in Chrome
+  2. Start recording
+  3. Read the script while clicking through the demo
+  4. Trim in iMovie (free on Mac)
+
+OPTION 2: LOOM (Professional, 15 min to make)
+  Tool: loom.com (free plan = 5 min videos)
+  1. Install Loom Chrome extension
+  2. Record screen + camera (picture-in-picture)
+  3. Auto-uploads with shareable link
+
+OPTION 3: OBS STUDIO + CANVA SLIDES (Most polished, 1-2 hours)
+  1. Make slides in Canva/Gamma (use the PPT content file)
+  2. Record in OBS Studio (free) with scene switching:
+     Scene 1: Slide deck (for problem/architecture slides)
+     Scene 2: Streamlit demo (for live demo segment)
+     Scene 3: Camera (for intro/outro)
+  3. Edit in DaVinci Resolve (free) or iMovie
+
+OPTION 4: PROFESSIONAL ANIMATION (Most impressive, 3-4 hours)
+  Tool: Remotion (remotion.dev) — React-based video framework
+  OR: Motion Canvas (motioncanvas.io) — code-driven animation
+  OR: Manim (manimce.org) — Python math animation (used by 3Blue1Brown)
+  1. Animate the agent DAG flowing
+  2. Animate numbers calculating step by step
+  3. Animate the Bloomberg-style output card appearing
+  4. Export as MP4
+
+
+================================================================================
+TIPS FOR AN IMPRESSIVE VIDEO
+================================================================================
+
+1. START WITH A STORY, NOT TECH
+   "A borrower walks in..." not "We built an 11-agent system..."
+
+2. SHOW THE DEMO EARLY
+   Don't make them wait 3 minutes for the demo. Show it by minute 2.
+
+3. PAUSE ON IMPRESSIVE NUMBERS
+   When you show "24-53 days to sell" or "7 fraud checks" — pause.
+   Let it sink in.
+
+4. COMPARE TO STATUS QUO
+   "Today this takes 3-7 days. We do it in 5 seconds."
+
+5. END WITH THE POONAWALLA CONNECTION
+   Show their actual LAP scenarios. Show it works for THEIR business.
+
+6. KEEP UNDER 5 MINUTES
+   Attention drops after 5 min. 4:30 is perfect.

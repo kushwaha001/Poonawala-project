@@ -1,0 +1,404 @@
+{
+  "pune_salaried_2bhk_baner": {
+    "market_value_range": [
+      9228185,
+      11389503
+    ],
+    "distress_value_range": [
+      6831303,
+      9318751
+    ],
+    "resale_potential_index": 72,
+    "rpi_label": "Moderately liquid",
+    "estimated_time_to_sell_days": [
+      23,
+      52
+    ],
+    "confidence_score": 0.885,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+70.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+6.8%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-6.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "floor_factor",
+        "impact": "+2.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-0.5%",
+        "source_agent": "property_char"
+      }
+    ],
+    "fraud_flags": [],
+    "poonawala_lap_assessment": {
+      "borrower": "Salaried IT professional, age 38, CIBIL 780",
+      "loan_purpose": "Child's higher education abroad",
+      "requested_loan": 3000000,
+      "max_ltv_pct": 70,
+      "max_eligible_loan": 6459729,
+      "actual_ltv_pct": 32.5,
+      "decision": "APPROVE",
+      "collateral_adequacy": "ADEQUATE"
+    },
+    "valuation_breakdown": {
+      "circle_rate": 7000,
+      "mcr": 1.7,
+      "bucket": "standard",
+      "f_loc": 1.0681,
+      "f_age": 0.9402,
+      "f_cfg": 0.995,
+      "f_legal": 1.0,
+      "f_floor": 1.02,
+      "point_estimate": 10308844,
+      "uncertainty_pct": 10.5
+    }
+  },
+  "nagpur_msme_shop_sitabuldi": {
+    "market_value_range": [
+      2381738,
+      2928542
+    ],
+    "distress_value_range": [
+      1746950,
+      2374125
+    ],
+    "resale_potential_index": 69,
+    "rpi_label": "Moderately liquid",
+    "estimated_time_to_sell_days": [
+      31,
+      69
+    ],
+    "confidence_score": 0.84,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+30.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-11.4%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "floor_factor",
+        "impact": "+5.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+4.6%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "+0.0%",
+        "source_agent": "property_char"
+      }
+    ],
+    "fraud_flags": [],
+    "poonawala_lap_assessment": {
+      "borrower": "Self-employed shopkeeper, age 45, CIBIL 720",
+      "loan_purpose": "Working capital for seasonal inventory",
+      "requested_loan": 1500000,
+      "max_ltv_pct": 70,
+      "max_eligible_loan": 1667216,
+      "actual_ltv_pct": 63.0,
+      "decision": "APPROVE",
+      "collateral_adequacy": "ADEQUATE"
+    },
+    "valuation_breakdown": {
+      "circle_rate": 6000,
+      "mcr": 1.3,
+      "bucket": "standard",
+      "f_loc": 1.0459,
+      "f_age": 0.8856,
+      "f_cfg": 1.0,
+      "f_legal": 1.0,
+      "f_floor": 1.05,
+      "point_estimate": 2655140,
+      "uncertainty_pct": 10.3
+    }
+  },
+  "jaipur_self_employed_3bhk": {
+    "market_value_range": [
+      6470649,
+      7916042
+    ],
+    "distress_value_range": [
+      4667676,
+      6311414
+    ],
+    "resale_potential_index": 64,
+    "rpi_label": "Moderately liquid",
+    "estimated_time_to_sell_days": [
+      28,
+      62
+    ],
+    "confidence_score": 0.87,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+30.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-10.9%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+5.2%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-1.6%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "legal_factor",
+        "impact": "+0.0%",
+        "source_agent": "legal"
+      }
+    ],
+    "fraud_flags": [],
+    "poonawala_lap_assessment": {
+      "borrower": "Self-employed textile trader, age 42, CIBIL 740",
+      "loan_purpose": "Business expansion \u2014 new showroom",
+      "requested_loan": 5000000,
+      "max_ltv_pct": 70,
+      "max_eligible_loan": 4529454,
+      "actual_ltv_pct": 70.0,
+      "decision": "REDUCE_LOAN_AMOUNT",
+      "collateral_adequacy": "INSUFFICIENT"
+    },
+    "valuation_breakdown": {
+      "circle_rate": 5000,
+      "mcr": 1.3,
+      "bucket": "standard",
+      "f_loc": 1.0516,
+      "f_age": 0.8912,
+      "f_cfg": 0.984,
+      "f_legal": 1.0,
+      "f_floor": 1.0,
+      "point_estimate": 7193345,
+      "uncertainty_pct": 10.0
+    }
+  },
+  "mumbai_high_value_dadar": {
+    "market_value_range": [
+      17536026,
+      22573138
+    ],
+    "distress_value_range": [
+      12989737,
+      18481057
+    ],
+    "resale_potential_index": 72,
+    "rpi_label": "Moderately liquid",
+    "estimated_time_to_sell_days": [
+      23,
+      52
+    ],
+    "confidence_score": 0.796,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+120.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-23.1%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+6.6%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-1.2%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "legal_factor",
+        "impact": "+0.0%",
+        "source_agent": "legal"
+      }
+    ],
+    "fraud_flags": [],
+    "poonawala_lap_assessment": {
+      "borrower": "Business owner, age 55, CIBIL 760, existing relationship",
+      "loan_purpose": "Business expansion \u2014 \u20b91.5Cr LAP against Dadar flat",
+      "requested_loan": 15000000,
+      "max_ltv_pct": 70,
+      "max_eligible_loan": 12275218,
+      "actual_ltv_pct": 70.0,
+      "decision": "REDUCE_LOAN_AMOUNT",
+      "collateral_adequacy": "INSUFFICIENT"
+    },
+    "valuation_breakdown": {
+      "circle_rate": 15000,
+      "mcr": 2.2,
+      "bucket": "prime",
+      "f_loc": 1.0663,
+      "f_age": 0.7694,
+      "f_cfg": 0.9877,
+      "f_legal": 1.0,
+      "f_floor": 1.0,
+      "point_estimate": 20054582,
+      "uncertainty_pct": 12.6
+    }
+  },
+  "gorakhpur_small_ticket_plot": {
+    "market_value_range": [
+      4454289,
+      5498049
+    ],
+    "distress_value_range": [
+      3175788,
+      4332588
+    ],
+    "resale_potential_index": 60,
+    "rpi_label": "Moderately liquid",
+    "estimated_time_to_sell_days": [
+      61,
+      136
+    ],
+    "confidence_score": 0.8,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+10.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+3.5%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-2.9%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "+0.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "legal_factor",
+        "impact": "+0.0%",
+        "source_agent": "legal"
+      }
+    ],
+    "fraud_flags": [],
+    "poonawala_lap_assessment": {
+      "borrower": "Small business owner, age 35, CIBIL 690",
+      "loan_purpose": "Working capital for retail shop",
+      "requested_loan": 800000,
+      "max_ltv_pct": 70,
+      "max_eligible_loan": 3118002,
+      "actual_ltv_pct": 18.0,
+      "decision": "APPROVE_WITH_CONDITIONS",
+      "collateral_adequacy": "ADEQUATE"
+    },
+    "valuation_breakdown": {
+      "circle_rate": 3000,
+      "mcr": 1.1,
+      "bucket": "standard",
+      "f_loc": 1.0354,
+      "f_age": 1.0,
+      "f_cfg": 0.9709,
+      "f_legal": 1.0,
+      "f_floor": 1.0,
+      "point_estimate": 4976169,
+      "uncertainty_pct": 10.5
+    }
+  },
+  "bangalore_it_whitefield_rented": {
+    "market_value_range": [
+      12689785,
+      15542218
+    ],
+    "distress_value_range": [
+      9350277,
+      12657528
+    ],
+    "resale_potential_index": 70,
+    "rpi_label": "Moderately liquid",
+    "estimated_time_to_sell_days": [
+      24,
+      54
+    ],
+    "confidence_score": 0.913,
+    "key_drivers": [
+      {
+        "factor": "market_to_circle_ratio",
+        "impact": "+70.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "micro_location_adjustment",
+        "impact": "+7.0%",
+        "source_agent": "location_intel"
+      },
+      {
+        "factor": "age_depreciation",
+        "impact": "-7.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "floor_factor",
+        "impact": "+2.0%",
+        "source_agent": "property_char"
+      },
+      {
+        "factor": "config_factor",
+        "impact": "-0.8%",
+        "source_agent": "property_char"
+      }
+    ],
+    "fraud_flags": [],
+    "poonawala_lap_assessment": {
+      "borrower": "Senior software engineer, age 34, CIBIL 800",
+      "loan_purpose": "Startup seed capital",
+      "requested_loan": 4000000,
+      "max_ltv_pct": 70,
+      "max_eligible_loan": 8882849,
+      "actual_ltv_pct": 31.5,
+      "decision": "APPROVE",
+      "collateral_adequacy": "ADEQUATE"
+    },
+    "valuation_breakdown": {
+      "circle_rate": 7500,
+      "mcr": 1.7,
+      "bucket": "standard",
+      "f_loc": 1.0701,
+      "f_age": 0.9296,
+      "f_cfg": 0.992,
+      "f_legal": 1.0,
+      "f_floor": 1.02,
+      "point_estimate": 14116001,
+      "uncertainty_pct": 10.1
+    }
+  }
+}

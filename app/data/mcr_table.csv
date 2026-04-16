@@ -1,0 +1,10 @@
+city_tier,bucket,mcr
+1,prime,2.20
+1,standard,1.70
+1,peripheral,1.30
+2,prime,1.60
+2,standard,1.30
+2,peripheral,1.10
+3,prime,1.20
+3,standard,1.10
+3,peripheral,1.05
