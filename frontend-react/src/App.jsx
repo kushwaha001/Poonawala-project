@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Building2, Shield, TrendingUp, AlertTriangle, ChevronDown,
   MapPin, Clock, Target, Gauge, BarChart3, Brain, CheckCircle2,
   Activity, Landmark, Info, Zap, ArrowUpRight, ArrowDownRight,
-  FileText, Home, Menu, X, Sparkles, Sun, Moon, Download
+  FileText, Home, Menu, X, Sparkles, Sun, Moon, Download,
+  MessageSquare, Send, Bot, User
 } from 'lucide-react'
 import MetricCard from './components/MetricCard'
 import Tooltip from './components/Tooltip'
@@ -33,15 +34,11 @@ const safe = (v, fallback = '—') => (v !== undefined && v !== null && v !== ''
 const toLabel = (value) => String(value || '—').replace(/_/g, ' ')
 
 const NUMERIC_RULES = {
-  area:               { min: 100,  max: 100000,     integer: false, step: '0.01' },
-  age:                { min: 0,    max: 120,         integer: true,  step: '1'    },
-  floor:              { min: 0,    max: 300,         integer: true,  step: '1'    },
-  total_floors:       { min: 0,    max: 300,         integer: true,  step: '1'    },
-  rent:               { min: 0,    max: 10000000,    integer: false, step: '0.01' },
-  loan_amount:        { min: 0,    max: 1000000000,  integer: false, step: '1'    },
-  approved_plan_area: { min: 0,    max: 100000,      integer: false, step: '0.01' },
-  vacancy_rate:       { min: 0,    max: 50,          integer: false, step: '0.1'  },
-  opex_ratio:         { min: 0,    max: 60,          integer: false, step: '0.1'  },
+  area: { min: 100, max: 100000, integer: false, step: '0.01' },
+  age: { min: 0, max: 120, integer: true, step: '1' },
+  floor: { min: 0, max: 300, integer: true, step: '1' },
+  total_floors: { min: 0, max: 300, integer: true, step: '1' },
+  rent: { min: 0, max: 10000000, integer: false, step: '0.01' },
 }
 
 const sanitizeNumericInput = (raw, { integer = false } = {}) => {
@@ -69,38 +66,29 @@ const parseNullableNumber = (value) => {
   return Number.isFinite(parsed) ? parsed : null
 }
 
-/* ─── Numbered Section ─── */
+/* ─── Numbered Section (always visible, accordion for collapse) ─── */
 function Section({ num, title, icon, badge, badgeColor = 'teal', children, defaultOpen = true }) {
   const Icon = icon
   const [open, setOpen] = useState(defaultOpen)
-  const bc = {
-    teal:   'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20',
-    amber:  'bg-amber-500/15 text-amber-300 border border-amber-500/20',
-    red:    'bg-red-500/15 text-red-300 border border-red-500/20',
-    blue:   'bg-blue-500/15 text-blue-300 border border-blue-500/20',
-    purple: 'bg-purple-500/15 text-purple-300 border border-purple-500/20',
-  }
+  const inner = useRef(null)
+  const [h, setH] = useState(0)
+  useEffect(() => { if (inner.current) setH(inner.current.scrollHeight) }, [open, children])
+  const bc = { teal: 'bg-emerald-500/10 text-emerald-400', amber: 'bg-amber-500/10 text-amber-400', red: 'bg-red-500/10 text-red-400', blue: 'bg-blue-500/10 text-blue-400', green: 'bg-emerald-500/10 text-emerald-400', purple: 'bg-purple-500/10 text-purple-400' }
   return (
     <div className="glass rounded-2xl overflow-hidden print-section" style={{ pageBreakInside: 'avoid' }}>
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-5 py-4 no-print-collapse">
-        <div className="flex items-center gap-3 min-w-0">
-          {num && (
-            <span className="num text-[0.68rem] font-bold w-6 h-6 rounded-full shrink-0 flex items-center justify-center"
-              style={{ background: 'var(--bg)', border: '1px solid var(--border-h)', color: 'var(--text3)' }}>{num}</span>
-          )}
-          <div className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center transition-all"
-            style={{ background: open ? 'rgba(0,212,170,0.1)' : 'var(--bg)', border: '1px solid', borderColor: open ? 'rgba(0,212,170,0.2)' : 'transparent' }}>
-            <Icon size={15} className={`transition-colors ${open ? 'text-teal-400' : 'text-slate-600'}`} />
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-5 py-4 group no-print-collapse">
+        <div className="flex items-center gap-3">
+          {num && <span className="num text-[0.65rem] font-bold w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text3)' }}>{num}</span>}
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors" style={{ background: open ? 'rgba(0,212,170,0.08)' : 'var(--bg)' }}>
+            <Icon size={14} className={`transition-colors ${open ? 'text-emerald-400' : 'text-slate-600'}`} />
           </div>
-          <span className="text-[0.95rem] font-bold truncate" style={{ color: 'var(--text)' }}>{title}</span>
-          {badge && <span className={`text-[0.62rem] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full shrink-0 ${bc[badgeColor]}`}>{badge}</span>}
+          <span className="text-[0.85rem] font-semibold" style={{ color: 'var(--text)' }}>{title}</span>
+          {badge && <span className={`text-[0.58rem] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full ${bc[badgeColor]}`}>{badge}</span>}
         </div>
-        <ChevronDown size={16} className={`text-slate-500 shrink-0 ml-3 transition-transform duration-300 no-print ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={15} className={`text-slate-600 transition-transform duration-300 no-print ${open ? 'rotate-180' : ''}`} />
       </button>
-      <div className={`accordion-body ${open ? 'open' : ''}`}>
-        <div className="accordion-inner">
-          <div className="px-5 pb-5">{children}</div>
-        </div>
+      <div className="section-body overflow-hidden transition-all duration-500 ease-out" style={{ maxHeight: open ? h + 40 : 0, opacity: open ? 1 : 0 }}>
+        <div ref={inner} className="px-5 pb-5">{children}</div>
       </div>
     </div>
   )
@@ -109,10 +97,9 @@ function Section({ num, title, icon, badge, badgeColor = 'teal', children, defau
 /* ─── Stat Row ─── */
 function StatRow({ label, value, tooltipId, color, highlight }) {
   const row = (
-    <div className="hover-row flex items-center justify-between py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-      <span className="text-[0.82rem]" style={{ color: 'var(--text3)' }}>{label}</span>
-      <span className={`num text-[0.88rem] font-semibold ${color || ''}`}
-        style={!color ? { color: highlight ? '#00ffcc' : 'var(--text)' } : undefined}>
+    <div className="hover-row flex items-center justify-between py-2.5" style={{ borderBottom: '1px solid var(--border)' }}>
+      <span className="text-[0.78rem]" style={{ color: 'var(--text3)' }}>{label}</span>
+      <span className={`num text-[0.82rem] font-medium ${color || ''}`} style={!color ? { color: highlight ? 'var(--color-teal)' : 'var(--text)' } : undefined}>
         {safe(value)}
       </span>
     </div>
@@ -120,7 +107,7 @@ function StatRow({ label, value, tooltipId, color, highlight }) {
   return tooltipId ? <Tooltip id={tooltipId} wrapperClassName="block w-full cursor-help">{row}</Tooltip> : row
 }
 
-/* ─── Factor Row ─── */
+/* ─── Factor Row (for Valuation Breakdown) ─── */
 function FactorRow({ label, value, impact, tooltipId }) {
   const impactNum = parseFloat(impact) || ((value - 1) * 100)
   const isPos = impactNum >= 0
@@ -128,13 +115,13 @@ function FactorRow({ label, value, impact, tooltipId }) {
   return (
     <Tooltip id={tooltipId} wrapperClassName="block w-full cursor-help">
       <div className="hover-row flex items-center gap-3 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-        <span className="text-[0.82rem] w-48 shrink-0" style={{ color: 'var(--text3)' }}>{label}</span>
-        <span className="num text-[0.84rem] font-bold w-16 text-center" style={{ color: 'var(--text)' }}>{safe(value)}</span>
-        <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--bg)' }}>
-          <div className={`h-full rounded-full ${isPos ? 'bg-gradient-to-r from-emerald-500 to-teal-300' : 'bg-gradient-to-r from-red-500 to-orange-400'}`}
+        <span className="text-[0.78rem] w-44 shrink-0" style={{ color: 'var(--text3)' }}>{label}</span>
+        <span className="num text-[0.8rem] font-semibold w-14 text-center" style={{ color: 'var(--text)' }}>{safe(value)}</span>
+        <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg)' }}>
+          <div className={`h-full rounded-full ${isPos ? 'bg-gradient-to-r from-emerald-500 to-teal-400' : 'bg-gradient-to-r from-red-500 to-orange-400'}`}
             style={{ width: `${barW}%`, transition: 'width 1s ease' }} />
         </div>
-        <span className={`num text-[0.82rem] font-bold w-16 text-right ${isPos ? 'text-emerald-400' : 'text-red-400'}`}>
+        <span className={`num text-[0.75rem] font-semibold w-16 text-right ${isPos ? 'text-emerald-400' : 'text-red-400'}`}>
           {isPos ? '+' : ''}{impactNum.toFixed(1)}%
         </span>
       </div>
@@ -142,60 +129,24 @@ function FactorRow({ label, value, impact, tooltipId }) {
   )
 }
 
-/* ─── Agent badge colours ─── */
-const AGENT_COLORS = {
-  location_intel:       { bg: 'rgba(56,189,248,0.12)',  border: 'rgba(56,189,248,0.35)',  text: '#38bdf8', label: 'Location Intel'     },
-  property_char:        { bg: 'rgba(245,158,11,0.12)',  border: 'rgba(245,158,11,0.35)',  text: '#f59e0b', label: 'Property'           },
-  legal:                { bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.35)',  text: '#10b981', label: 'Legal'              },
-  macro_context:        { bg: 'rgba(167,139,250,0.12)', border: 'rgba(167,139,250,0.35)', text: '#a78bfa', label: 'Macro'              },
-  market_dynamics:      { bg: 'rgba(251,146,60,0.12)',  border: 'rgba(251,146,60,0.35)',  text: '#fb923c', label: 'Market'             },
-  fraud:                { bg: 'rgba(251,113,133,0.12)', border: 'rgba(251,113,133,0.35)', text: '#fb7185', label: 'Fraud'              },
-  comparable_analysis:  { bg: 'rgba(99,102,241,0.12)',  border: 'rgba(99,102,241,0.35)',  text: '#6366f1', label: 'Comparable'         },
-}
-const DRIVER_DESC = {
-  market_to_circle_ratio:    'Real transaction premium over the govt. circle rate — the single largest valuation driver.',
-  micro_location_adjustment: 'Fine-grain POI proximity vs. expected for this micro-bucket, powered by live OSM data.',
-  age_depreciation:          'Non-linear structure decay; land value preserved. LLM condition-adjusts ±5%.',
-  config_factor:             'Penalty for non-standard unit size vs. locality modal area. Standard units sell faster.',
-  legal_factor:              'Ownership type and title clarity discount. Freehold + clear title = 1.00.',
-  floor_factor:              'Floor-level premium/penalty. Ground shops highest; high floors without lift discounted.',
-  regulatory_compliance:     'India-specific multiplicative haircut for OC, litigation, attachment, and RERA gaps.',
-  macro_economic_adjustment: 'Overlay of RBI repo rate, market cycle position, and seasonal demand on base value.',
-}
-
 /* ─── Driver Bar ─── */
 function DriverBar({ name, impact, agent, index }) {
   const val = parseFloat(impact)
   const isPos = val >= 0
   const w = Math.min(85, Math.abs(val) * 1.1)
-  const ac = AGENT_COLORS[agent] || { bg: 'rgba(100,100,100,0.10)', border: 'rgba(100,100,100,0.25)', text: 'var(--text4)', label: toLabel(agent) }
-  const desc = DRIVER_DESC[name]
   return (
     <Tooltip id={name}>
-      <div className="hover-row py-3 px-1" style={{ borderBottom: '1px solid var(--border)' }}>
-        <div className="flex items-center gap-3">
-          {/* Factor name + agent badge */}
-          <div className="w-52 shrink-0 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[0.84rem] font-semibold capitalize" style={{ color: 'var(--text1)' }}>{name.replace(/_/g, ' ')}</span>
-              <span className="text-[0.6rem] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full shrink-0"
-                style={{ background: ac.bg, border: `1px solid ${ac.border}`, color: ac.text }}>
-                {ac.label}
-              </span>
-            </div>
-            {desc && <p className="text-[0.68rem] mt-0.5 leading-snug" style={{ color: 'var(--text3)' }}>{desc}</p>}
-          </div>
-          {/* Bar */}
-          <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'var(--bg)' }}>
-            <div className={`h-full rounded-full ${isPos ? 'bg-gradient-to-r from-emerald-500 to-teal-300' : 'bg-gradient-to-r from-red-500 to-orange-400'}`}
-              style={{ width: `${w}%`, transition: 'width 1.2s cubic-bezier(0.4,0,0.2,1)', transitionDelay: `${index * 100}ms` }} />
-          </div>
-          {/* Impact value */}
-          <span className={`num text-[0.84rem] font-bold w-16 text-right shrink-0 ${isPos ? 'text-emerald-400' : 'text-red-400'}`}>
-            {isPos ? <ArrowUpRight size={12} className="inline mr-0.5 -mt-0.5" /> : <ArrowDownRight size={12} className="inline mr-0.5 -mt-0.5" />}
-            {impact}
-          </span>
+      <div className="hover-row flex items-center gap-3 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
+        <span className="text-[0.75rem] w-40 shrink-0 capitalize truncate" style={{ color: 'var(--text3)' }}>{name.replace(/_/g, ' ')}</span>
+        <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg)' }}>
+          <div className={`h-full rounded-full ${isPos ? 'bg-gradient-to-r from-emerald-500 to-teal-400' : 'bg-gradient-to-r from-red-500 to-orange-400'}`}
+            style={{ width: `${w}%`, transition: 'width 1.2s cubic-bezier(0.4,0,0.2,1)', transitionDelay: `${index * 100}ms` }} />
         </div>
+        <span className={`num text-[0.78rem] font-semibold w-16 text-right ${isPos ? 'text-emerald-400' : 'text-red-400'}`}>
+          {isPos ? <ArrowUpRight size={11} className="inline mr-0.5 -mt-0.5" /> : <ArrowDownRight size={11} className="inline mr-0.5 -mt-0.5" />}
+          {impact}
+        </span>
+        <span className="text-[0.58rem] w-24 text-right truncate" style={{ color: 'var(--text4)' }}>{toLabel(agent)}</span>
       </div>
     </Tooltip>
   )
@@ -245,183 +196,146 @@ function ArcGauge({ value, size = 155 }) {
   )
 }
 
-/* ─── Select Field ─── */
-function Sel({ label, id, options, value, onChange }) {
+/* ═══════════════════════ CHATBOT WIDGET ═══════════════════════ */
+function ChatBot({ onFieldsExtracted, onValuationResult }) {
+  const [open, setOpen] = useState(false)
+  const [messages, setMessages] = useState([
+    { role: 'assistant', content: 'Hi! I\'m the Poonawalla valuation assistant. Tell me about a property and I\'ll run an estimate — for example: "Value a 3BHK flat in Baner, Pune, 950 sqft, 6 years old."' }
+  ])
+  const [input, setInput] = useState('')
+  const [thinking, setThinking] = useState(false)
+  const bottomRef = useRef(null)
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
+
+  const send = async () => {
+    const text = input.trim()
+    if (!text || thinking) return
+    const userMsg = { role: 'user', content: text }
+    const newHistory = [...messages, userMsg]
+    setMessages(newHistory)
+    setInput('')
+    setThinking(true)
+
+    try {
+      const resp = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history: messages.slice(1) }),
+      })
+      const data = await resp.json()
+      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }])
+
+      if (data.extracted_fields && Object.keys(data.extracted_fields).length > 0) {
+        onFieldsExtracted(data.extracted_fields)
+      }
+      if (data.valuation_result) {
+        onValuationResult(data.valuation_result, data.extracted_fields)
+      }
+    } catch {
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Connection error — please try again or use the form directly.' }])
+    } finally {
+      setThinking(false)
+    }
+  }
+
   return (
-    <div>
-      <label className="block text-[0.68rem] mb-1.5 font-bold uppercase tracking-[0.12em]" style={{ color: 'var(--text4)' }}>{label}</label>
-      <select value={value} onChange={e => onChange(id, e.target.value)}
-        className="w-full rounded-xl px-3 py-2.5 text-[0.88rem] focus:outline-none transition-all"
-        style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}>
-        {options.map(o => <option key={typeof o === 'string' ? o : o.v} value={typeof o === 'string' ? o : o.v}>{typeof o === 'string' ? o : o.l}</option>)}
-      </select>
-    </div>
-  )
-}
+    <>
+      {/* Floating toggle button */}
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 no-print"
+        style={{ background: 'linear-gradient(135deg, #00d4aa, #0891b2)', boxShadow: '0 4px 24px rgba(0,212,170,0.35)' }}
+        title="Open Valuation Chatbot"
+      >
+        {open ? <X size={22} className="text-white" /> : <MessageSquare size={22} className="text-white" />}
+      </button>
 
-/* ─── Numeric Input Field ─── */
-function Inp({ label, id, value, onChange, onBlur, rule = {} }) {
-  return (
-    <div>
-      <label className="block text-[0.68rem] mb-1.5 font-bold uppercase tracking-[0.12em]" style={{ color: 'var(--text4)' }}>{label}</label>
-      <input
-        type="text"
-        inputMode={rule.integer ? 'numeric' : 'decimal'}
-        pattern={rule.integer ? '[0-9]*' : '[0-9]*[.]?[0-9]*'}
-        min={rule.min}
-        max={rule.max}
-        step={rule.step || 'any'}
-        value={value}
-        onChange={e => onChange(id, e.target.value)}
-        onBlur={() => onBlur(id)}
-        className="w-full rounded-xl px-3 py-2.5 text-[0.92rem] num focus:outline-none transition-all"
-        style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}
-      />
-    </div>
-  )
-}
+      {/* Chat panel */}
+      {open && (
+        <div
+          className="fixed bottom-24 right-6 z-50 w-[360px] max-h-[520px] flex flex-col rounded-2xl overflow-hidden shadow-2xl no-print"
+          style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}
+        >
+          {/* Header */}
+          <div className="flex items-center gap-3 px-4 py-3" style={{ borderBottom: '1px solid var(--border)', background: 'linear-gradient(135deg, rgba(0,212,170,0.08), rgba(8,145,178,0.08))' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #00d4aa, #0891b2)' }}>
+              <Bot size={16} className="text-white" />
+            </div>
+            <div>
+              <div className="text-[0.82rem] font-bold" style={{ color: 'var(--text)' }}>Valuation Assistant</div>
+              <div className="text-[0.58rem]" style={{ color: 'var(--text4)' }}>Powered by Gemma4 · 11-Agent Pipeline</div>
+            </div>
+            <div className="ml-auto flex items-center gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" style={{ animation: 'pulseNeon 2s infinite' }} />
+              <span className="text-[0.55rem] text-emerald-400 font-semibold">LIVE</span>
+            </div>
+          </div>
 
-/* ─── Sidebar Section Divider ─── */
-function SbDiv({ label }) {
-  return (
-    <div className="flex items-center gap-2 pt-1 pb-1">
-      <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-      <span className="text-[0.55rem] uppercase tracking-[0.18em] font-bold shrink-0" style={{ color: 'var(--text4)' }}>{label}</span>
-      <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
-    </div>
-  )
-}
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ minHeight: 0, maxHeight: 360 }}>
+            {messages.map((m, i) => (
+              <div key={i} className={`flex gap-2 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${m.role === 'user' ? 'bg-blue-500/20' : 'bg-emerald-500/20'}`}>
+                  {m.role === 'user' ? <User size={11} className="text-blue-400" /> : <Bot size={11} className="text-emerald-400" />}
+                </div>
+                <div className={`max-w-[78%] px-3 py-2 rounded-xl text-[0.78rem] leading-relaxed ${m.role === 'user' ? 'bg-blue-500/15 text-blue-100 rounded-tr-sm' : 'rounded-tl-sm'}`}
+                  style={m.role !== 'user' ? { background: 'var(--bg-card)', color: 'var(--text2)', border: '1px solid var(--border)' } : {}}>
+                  {m.content}
+                </div>
+              </div>
+            ))}
+            {thinking && (
+              <div className="flex gap-2">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
+                  <Bot size={11} className="text-emerald-400" />
+                </div>
+                <div className="px-3 py-2 rounded-xl rounded-tl-sm text-[0.78rem]" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text4)' }}>
+                  <span className="inline-flex gap-1">
+                    <span className="animate-bounce" style={{ animationDelay: '0ms' }}>·</span>
+                    <span className="animate-bounce" style={{ animationDelay: '150ms' }}>·</span>
+                    <span className="animate-bounce" style={{ animationDelay: '300ms' }}>·</span>
+                  </span>
+                </div>
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
 
-/* ─── Status Badge pill for Legal fields ─── */
-function StatusBadge({ val }) {
-  if (val === true)  return <span className="text-[0.7rem] font-bold text-emerald-400">✓ Yes</span>
-  if (val === false) return <span className="text-[0.7rem] font-bold text-red-400">✗ No</span>
-  return <span className="text-[0.7rem]" style={{ color: 'var(--text4)' }}>—</span>
-}
-
-/* ─── Sidebar Form ─── */
-function SidebarForm({ form, city, locality, loading, onCity, onLocality, onField, onNumericChange, onNumericBlur, onValuate }) {
-  return (
-    <div className="p-5 space-y-3">
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(0,255,204,0.08)', border: '1px solid rgba(0,255,204,0.15)' }}>
-          <Home size={13} className="text-teal-400" />
-        </div>
-        <span className="grad-teal text-[0.7rem] uppercase tracking-[0.16em] font-bold">Property Details</span>
-      </div>
-
-      {/* City / Locality */}
-      <div>
-        <label className="block text-[0.68rem] mb-1.5 font-bold uppercase tracking-[0.12em]" style={{ color: 'var(--text4)' }}>City</label>
-        <select value={city} onChange={e => onCity(e.target.value)}
-          className="w-full rounded-xl px-3 py-2.5 text-[0.88rem] focus:outline-none transition-all"
-          style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}>
-          {Object.keys(LOCALITIES).map(c => <option key={c}>{c}</option>)}
-        </select>
-      </div>
-      <div>
-        <label className="block text-[0.68rem] mb-1.5 font-bold uppercase tracking-[0.12em]" style={{ color: 'var(--text4)' }}>Locality</label>
-        <select value={locality} onChange={e => onLocality(e.target.value)}
-          className="w-full rounded-xl px-3 py-2.5 text-[0.88rem] focus:outline-none transition-all"
-          style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}>
-          {(LOCALITIES[city] || []).map(l => <option key={l}>{l}</option>)}
-        </select>
-      </div>
-
-      <SbDiv label="Basic Details" />
-      <div className="grid grid-cols-2 gap-2.5">
-        <Sel label="Type" id="prop_type" options={['residential', 'commercial', 'industrial']} value={form.prop_type} onChange={onField} />
-        <Sel label="Sub-Type" id="sub_type" options={['apartment', 'villa', 'plot', 'shop', 'warehouse', 'office']} value={form.sub_type} onChange={onField} />
-        <Inp label="Built-up Area (sqft)" id="area" value={form.area} onChange={onNumericChange} onBlur={onNumericBlur} rule={NUMERIC_RULES.area} />
-        <Inp label="Age (years)" id="age" value={form.age} onChange={onNumericChange} onBlur={onNumericBlur} rule={NUMERIC_RULES.age} />
-      </div>
-      <Sel label="Configuration" id="config" options={[{ v: '', l: 'None / N-A' }, '1BHK', '2BHK', '3BHK', '4BHK', '5BHK']} value={form.config} onChange={onField} />
-
-      <SbDiv label="Occupation & Title" />
-      <div className="grid grid-cols-2 gap-2.5">
-        <Sel label="Ownership" id="ownership" options={[{ v: 'freehold', l: 'Freehold' }, { v: 'leasehold', l: 'Leasehold' }, { v: '', l: 'Unknown' }]} value={form.ownership} onChange={onField} />
-        <Sel label="Title Status" id="title_clear" options={[{ v: 'true', l: 'Clear' }, { v: 'false', l: 'Disputed' }, { v: '', l: 'Unknown' }]} value={form.title_clear} onChange={onField} />
-        <Inp label="Floor" id="floor" value={form.floor} onChange={onNumericChange} onBlur={onNumericBlur} rule={NUMERIC_RULES.floor} />
-        <Inp label="Total Floors" id="total_floors" value={form.total_floors} onChange={onNumericChange} onBlur={onNumericBlur} rule={NUMERIC_RULES.total_floors} />
-        <Sel label="Occupancy" id="occupancy" options={['self_occupied', 'rented', 'vacant']} value={form.occupancy} onChange={onField} />
-        <Inp label="Rent ₹/mo" id="rent" value={form.rent} onChange={onNumericChange} onBlur={onNumericBlur} rule={NUMERIC_RULES.rent} />
-      </div>
-
-      <SbDiv label="Legal & Compliance" />
-      <div className="grid grid-cols-2 gap-2.5">
-        <Sel label="RERA Registered"
-          id="rera_registered"
-          options={[{ v: '', l: 'Unknown' }, { v: 'true', l: 'Yes' }, { v: 'false', l: 'No' }]}
-          value={form.rera_registered} onChange={onField} />
-        <Sel label="Occupancy Cert. (OC)"
-          id="occupancy_cert"
-          options={[{ v: '', l: 'Unknown' }, { v: 'true', l: 'Yes / Obtained' }, { v: 'false', l: 'No / Missing' }]}
-          value={form.occupancy_cert} onChange={onField} />
-        <Sel label="Completion Cert. (CC)"
-          id="completion_cert"
-          options={[{ v: '', l: 'Unknown' }, { v: 'true', l: 'Yes / Obtained' }, { v: 'false', l: 'No / Missing' }]}
-          value={form.completion_cert} onChange={onField} />
-        <Sel label="Litigation Pending"
-          id="litigation"
-          options={[{ v: '', l: 'Unknown' }, { v: 'false', l: 'No' }, { v: 'true', l: 'Yes — Active' }]}
-          value={form.litigation} onChange={onField} />
-      </div>
-      <Sel label="Encumbrance Status"
-        id="encumbrance"
-        options={[
-          { v: '', l: 'Unknown' }, { v: 'clear', l: 'Clear / Nil' },
-          { v: 'existing_mortgage', l: 'Existing Mortgage' },
-          { v: 'attachment_order', l: 'Attachment Order' },
-          { v: 'disputed', l: 'Disputed Claim' },
-        ]}
-        value={form.encumbrance} onChange={onField} />
-      <Inp label="Approved Plan Area (sqft)" id="approved_plan_area"
-        value={form.approved_plan_area} onChange={onNumericChange} onBlur={onNumericBlur}
-        rule={NUMERIC_RULES.approved_plan_area} />
-
-      <SbDiv label="Loan & Income Parameters" />
-      <Inp label="Loan Amount Requested (₹)" id="loan_amount"
-        value={form.loan_amount} onChange={onNumericChange} onBlur={onNumericBlur}
-        rule={NUMERIC_RULES.loan_amount} />
-      {form.occupancy === 'rented' && (
-        <div className="grid grid-cols-2 gap-2.5">
-          <Inp label="Vacancy Rate %" id="vacancy_rate"
-            value={form.vacancy_rate} onChange={onNumericChange} onBlur={onNumericBlur}
-            rule={NUMERIC_RULES.vacancy_rate} />
-          <Inp label="Opex Ratio %" id="opex_ratio"
-            value={form.opex_ratio} onChange={onNumericChange} onBlur={onNumericBlur}
-            rule={NUMERIC_RULES.opex_ratio} />
+          {/* Input */}
+          <div className="p-3" style={{ borderTop: '1px solid var(--border)' }}>
+            <div className="flex gap-2">
+              <input
+                className="flex-1 rounded-xl px-3 py-2 text-[0.78rem] focus:outline-none"
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                placeholder="Describe a property..."
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && send()}
+                disabled={thinking}
+              />
+              <button
+                onClick={send}
+                disabled={thinking || !input.trim()}
+                className="w-9 h-9 rounded-xl flex items-center justify-center transition-all disabled:opacity-40"
+                style={{ background: 'linear-gradient(135deg, #00d4aa, #0891b2)' }}
+              >
+                <Send size={14} className="text-white" />
+              </button>
+            </div>
+          </div>
         </div>
       )}
-
-      <div className="pt-2">
-        <button onClick={onValuate} disabled={loading} className="w-full py-3.5 rounded-xl font-bold text-[0.85rem] text-white transition-all disabled:opacity-40"
-          style={{ background: loading ? 'var(--border)' : 'linear-gradient(135deg, #00d4aa, #0891b2)', boxShadow: loading ? 'none' : '0 4px 20px rgba(0,212,170,0.12)' }}>
-          {loading
-            ? <span className="flex items-center justify-center gap-2"><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" opacity=".25" /><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity=".75" /></svg> Analyzing...</span>
-            : <span className="flex items-center justify-center gap-2"><Zap size={15} /> VALUATE</span>}
-        </button>
-        {loading && <p className="text-[0.6rem] text-center mt-2" style={{ color: 'var(--text4)' }}>Gemma4 reasoning... ~30-60s</p>}
-      </div>
-    </div>
+    </>
   )
 }
+
 
 /* ═══════════════════════ MAIN APP ═══════════════════════ */
 export default function App() {
   const [city, setCity] = useState('Pune')
   const [locality, setLocality] = useState('Baner')
-  const [form, setForm] = useState({
-    prop_type: 'residential', sub_type: 'apartment', area: 850, age: 5,
-    config: '2BHK', ownership: 'freehold', title_clear: 'true',
-    floor: 4, total_floors: 14, has_lift: true,
-    occupancy: 'self_occupied', rent: '',
-    // Legal & compliance
-    rera_registered: '', occupancy_cert: '', completion_cert: '',
-    encumbrance: '', litigation: '', approved_plan_area: '',
-    // Loan & income
-    loan_amount: '', vacancy_rate: '', opex_ratio: '',
-  })
+  const [form, setForm] = useState({ prop_type: 'residential', sub_type: 'apartment', area: 850, age: 5, config: '2BHK', ownership: 'freehold', title_clear: 'true', floor: 4, total_floors: 14, has_lift: true, occupancy: 'self_occupied', rent: 0, rera: '', builder: '' })
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -433,30 +347,55 @@ export default function App() {
 
   const handlePrint = () => setTimeout(() => window.print(), 200)
 
+  const handleFieldsExtracted = (fields) => {
+    if (fields.city) setCity(fields.city)
+    if (fields.locality) setLocality(fields.locality)
+    setForm(prev => ({
+      ...prev,
+      ...(fields.property_type ? { prop_type: fields.property_type } : {}),
+      ...(fields.sub_type ? { sub_type: fields.sub_type } : {}),
+      ...(fields.built_up_area_sqft != null ? { area: String(fields.built_up_area_sqft) } : {}),
+      ...(fields.age_years != null ? { age: String(fields.age_years) } : {}),
+      ...(fields.configuration ? { config: fields.configuration } : {}),
+      ...(fields.floor != null ? { floor: String(fields.floor) } : {}),
+      ...(fields.total_floors != null ? { total_floors: String(fields.total_floors) } : {}),
+      ...(fields.has_lift != null ? { has_lift: fields.has_lift } : {}),
+      ...(fields.ownership ? { ownership: fields.ownership } : {}),
+      ...(fields.title_clear != null ? { title_clear: String(fields.title_clear) } : {}),
+      ...(fields.monthly_rent != null ? { rent: String(fields.monthly_rent) } : {}),
+      ...(fields.occupancy ? { occupancy: fields.occupancy } : {}),
+      ...(fields.rera_registered != null ? { rera: String(fields.rera_registered) } : {}),
+      ...(fields.builder_name ? { builder: fields.builder_name } : {}),
+    }))
+  }
+
+  const handleChatValuation = (valResult, fields) => {
+    setResult(valResult)
+    if (fields) {
+      const addr = `${fields.locality || ''}, ${fields.city || ''}`.trim().replace(/^,\s*/, '')
+      setLastInput({
+        address: addr,
+        property_type: fields.property_type || 'residential',
+        sub_type: fields.sub_type,
+        built_up_area_sqft: fields.built_up_area_sqft,
+        age_years: fields.age_years,
+      })
+    }
+  }
+
   const handleValuate = async () => {
     setLoading(true); setError(null); setResult(null); setDrawer(false)
-    const parseBool = (v) => v === 'true' ? true : v === 'false' ? false : null
     const body = {
       address: `${locality}, ${city}`, property_type: form.prop_type, sub_type: form.sub_type,
       built_up_area_sqft: parseNullableNumber(form.area),
       age_years: parseNullableNumber(form.age),
       configuration: form.config || null, ownership: form.ownership || null,
-      title_clear: parseBool(form.title_clear),
+      title_clear: form.title_clear === 'true' ? true : form.title_clear === 'false' ? false : null,
       floor: parseNullableNumber(form.floor),
       total_floors: parseNullableNumber(form.total_floors),
-      has_lift: form.has_lift, occupancy: form.occupancy || null,
-      monthly_rent: parseNullableNumber(form.rent),
-      // Legal & compliance
-      rera_registered:        parseBool(form.rera_registered),
-      occupancy_certificate:  parseBool(form.occupancy_cert),
-      completion_certificate: parseBool(form.completion_cert),
-      encumbrance_status:     form.encumbrance || null,
-      litigation_pending:     parseBool(form.litigation),
-      approved_plan_area_sqft: parseNullableNumber(form.approved_plan_area),
-      // Loan & income
-      loan_amount_requested: parseNullableNumber(form.loan_amount),
-      vacancy_rate_pct:      parseNullableNumber(form.vacancy_rate),
-      opex_ratio_pct:        parseNullableNumber(form.opex_ratio),
+      has_lift: form.has_lift, occupancy: form.occupancy || null, monthly_rent: parseNullableNumber(form.rent),
+      rera_registered: form.rera === 'true' ? true : form.rera === 'false' ? false : null,
+      builder_name: form.builder || null,
     }
     setLastInput(body)
     try {
@@ -467,11 +406,11 @@ export default function App() {
     finally { setLoading(false) }
   }
 
-  const handleField = (id, v) => setForm(p => ({ ...p, [id]: v }))
+  const f = (id, v) => setForm(p => ({ ...p, [id]: v }))
 
   const setNumericField = (id, raw) => {
     const rule = NUMERIC_RULES[id] || {}
-    setForm(prev => ({ ...prev, [id]: sanitizeNumericInput(raw, rule) }))
+    f(id, sanitizeNumericInput(raw, rule))
   }
 
   const finalizeNumericField = (id) => {
@@ -488,19 +427,86 @@ export default function App() {
     })
   }
 
-  const handleCity = (newCity) => { setCity(newCity); setLocality(LOCALITIES[newCity]?.[0] || '') }
-
-  const sidebarProps = {
-    form, city, locality, loading,
-    onCity: handleCity,
-    onLocality: setLocality,
-    onField: handleField,
-    onNumericChange: setNumericField,
-    onNumericBlur: finalizeNumericField,
-    onValuate: handleValuate,
+  const Sel = ({ label, id, options }) => (
+    <div>
+      <label className="block text-[0.6rem] mb-1 font-medium uppercase tracking-[0.1em]" style={{ color: 'var(--text4)' }}>{label}</label>
+      <select value={form[id]} onChange={e => f(id, e.target.value)} className="w-full rounded-xl px-3 py-2.5 text-[0.8rem] focus:outline-none transition-all" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}>
+        {options.map(o => <option key={typeof o === 'string' ? o : o.v} value={typeof o === 'string' ? o : o.v}>{typeof o === 'string' ? o : o.l}</option>)}
+      </select>
+    </div>
+  )
+  const Inp = ({ label, id, ...p }) => {
+    const rule = NUMERIC_RULES[id] || {}
+    return (
+    <div>
+      <label className="block text-[0.6rem] mb-1 font-medium uppercase tracking-[0.1em]" style={{ color: 'var(--text4)' }}>{label}</label>
+      <input
+        type="text"
+        inputMode={rule.integer ? 'numeric' : 'decimal'}
+        pattern={rule.integer ? '[0-9]*' : '[0-9]*[.]?[0-9]*'}
+        min={rule.min}
+        max={rule.max}
+        step={rule.step || 'any'}
+        value={form[id]}
+        onChange={e => setNumericField(id, e.target.value)}
+        onBlur={() => finalizeNumericField(id)}
+        className="w-full rounded-xl px-3 py-2.5 text-[0.8rem] num focus:outline-none transition-all"
+        style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}
+        {...p}
+      />
+    </div>
+  )
   }
 
   const d = result, ins = d?.insights || {}, tr = d?.agent_trace || {}
+
+  const SidebarForm = () => (
+    <div className="p-5 space-y-3">
+      <div className="flex items-center gap-2 mb-4"><Home size={13} style={{ color: 'var(--text4)' }} /><span className="text-[0.62rem] uppercase tracking-[0.14em] font-semibold" style={{ color: 'var(--text4)' }}>Property Details</span></div>
+      <div>
+        <label className="block text-[0.6rem] mb-1 font-medium uppercase tracking-[0.1em]" style={{ color: 'var(--text4)' }}>City</label>
+        <select value={city} onChange={e => { setCity(e.target.value); setLocality(LOCALITIES[e.target.value]?.[0] || '') }} className="w-full rounded-xl px-3 py-2.5 text-[0.8rem] focus:outline-none transition-all" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}>
+          {Object.keys(LOCALITIES).map(c => <option key={c}>{c}</option>)}
+        </select>
+      </div>
+      <div>
+        <label className="block text-[0.6rem] mb-1 font-medium uppercase tracking-[0.1em]" style={{ color: 'var(--text4)' }}>Locality</label>
+        <select value={locality} onChange={e => setLocality(e.target.value)} className="w-full rounded-xl px-3 py-2.5 text-[0.8rem] focus:outline-none transition-all" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }}>
+          {(LOCALITIES[city] || []).map(l => <option key={l}>{l}</option>)}
+        </select>
+      </div>
+      <div style={{ height: 1, background: 'var(--border)' }} />
+      <div className="grid grid-cols-2 gap-2.5">
+        <Sel label="Type" id="prop_type" options={['residential', 'commercial', 'industrial']} />
+        <Sel label="Sub-Type" id="sub_type" options={['apartment', 'villa', 'plot', 'shop', 'warehouse', 'office']} />
+        <Inp label="Area (sqft)" id="area" />
+        <Inp label="Age (years)" id="age" />
+      </div>
+      <Sel label="Config" id="config" options={[{ v: '', l: 'None' }, '1BHK', '2BHK', '3BHK', '4BHK', '5BHK']} />
+      <div style={{ height: 1, background: 'var(--border)' }} />
+      <div className="grid grid-cols-2 gap-2.5">
+        <Sel label="Ownership" id="ownership" options={[{ v: 'freehold', l: 'Freehold' }, { v: 'leasehold', l: 'Leasehold' }, { v: '', l: 'Unknown' }]} />
+        <Sel label="Title" id="title_clear" options={[{ v: 'true', l: 'Clear' }, { v: 'false', l: 'Disputed' }, { v: '', l: 'Unknown' }]} />
+        <Inp label="Floor" id="floor" />
+        <Inp label="Total Floors" id="total_floors" />
+        <Sel label="Occupancy" id="occupancy" options={['self_occupied', 'rented', 'vacant']} />
+        <Inp label="Rent ₹/mo" id="rent" />
+      </div>
+      <div style={{ height: 1, background: 'var(--border)' }} />
+      <Sel label="RERA Status" id="rera" options={[{ v: '', l: 'Unknown' }, { v: 'true', l: 'Registered' }, { v: 'false', l: 'Not Registered' }]} />
+      <div>
+        <label className="block text-[0.6rem] mb-1 font-medium uppercase tracking-[0.1em]" style={{ color: 'var(--text4)' }}>Builder / Developer</label>
+        <input type="text" placeholder="e.g. Godrej, DLF, Lodha..." value={form.builder} onChange={e => f('builder', e.target.value)} className="w-full rounded-xl px-3 py-2.5 text-[0.8rem] focus:outline-none transition-all" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)' }} />
+      </div>
+      <div className="pt-2">
+        <button onClick={handleValuate} disabled={loading} className="w-full py-3.5 rounded-xl font-bold text-[0.85rem] text-white transition-all disabled:opacity-40"
+          style={{ background: loading ? 'var(--border)' : 'linear-gradient(135deg, #00d4aa, #0891b2)', boxShadow: loading ? 'none' : '0 4px 20px rgba(0,212,170,0.12)' }}>
+          {loading ? <span className="flex items-center justify-center gap-2"><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" opacity=".25" /><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" opacity=".75" /></svg> Analyzing...</span> : <span className="flex items-center justify-center gap-2"><Zap size={15} /> VALUATE</span>}
+        </button>
+        {loading && <p className="text-[0.6rem] text-center mt-2" style={{ color: 'var(--text4)' }}>Gemma4 reasoning... ~30-60s</p>}
+      </div>
+    </div>
+  )
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
@@ -512,7 +518,7 @@ export default function App() {
           <span className="text-sm font-semibold">Property Input</span>
           <button onClick={() => setDrawer(false)}><X size={18} style={{ color: 'var(--text3)' }} /></button>
         </div>
-        <SidebarForm {...sidebarProps} />
+        <SidebarForm />
       </div>
 
       <header className="sticky top-0 z-50 no-print" style={{ background: light ? 'rgba(255,255,255,0.92)' : 'rgba(5,7,9,0.88)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)' }}>
@@ -521,8 +527,8 @@ export default function App() {
             <button className="md:hidden p-1.5" onClick={() => setDrawer(true)}><Menu size={20} style={{ color: 'var(--text3)' }} /></button>
             <div className="w-8 h-8 rounded-lg flex items-center justify-center font-extrabold text-xs text-white" style={{ background: 'linear-gradient(135deg, #00d4aa, #0891b2)' }}>CV</div>
             <div className="hidden sm:block">
-              <h1 className="text-[0.95rem] font-extrabold tracking-tight grad-teal">Collateral Valuation Engine</h1>
-              <p className="text-[0.62rem] font-medium" style={{ color: 'var(--text4)' }}>AI-Powered Estimation Portal</p>
+              <h1 className="text-[0.85rem] font-bold tracking-tight" style={{ color: 'var(--text)' }}>Collateral Valuation Engine</h1>
+              <p className="text-[0.58rem]" style={{ color: 'var(--text4)' }}>AI-Powered Estimation Portal</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -541,7 +547,7 @@ export default function App() {
 
       <div className="flex min-h-[calc(100vh-50px)]">
         <aside className="hidden md:block w-[300px] shrink-0 overflow-y-auto no-print" style={{ borderRight: '1px solid var(--border)', background: 'var(--bg2)' }}>
-          <SidebarForm {...sidebarProps} />
+          <SidebarForm />
         </aside>
 
         <main className="flex-1 overflow-y-auto">
@@ -549,22 +555,9 @@ export default function App() {
 
           {!d && !loading && (
             <div className="flex flex-col items-center justify-center h-[75vh] text-center px-6">
-              <div className="w-20 h-20 glass rounded-3xl flex items-center justify-center mb-6"
-                style={{ background: 'rgba(0,255,204,0.05)', border: '1px solid rgba(0,255,204,0.15)', boxShadow: '0 0 40px rgba(0,255,204,0.06)' }}>
-                <Building2 size={34} className="text-teal-500" />
-              </div>
-              <h2 className="text-2xl font-extrabold mb-3 grad-teal">Collateral Valuation Engine</h2>
-              <p className="text-[0.9rem] max-w-md leading-relaxed" style={{ color: 'var(--text3)' }}>
-                Configure property details and click{' '}
-                <strong className="text-teal-400">VALUATE</strong>{' '}
-                to run the 11-agent pipeline. Hover any metric to see its formula.
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
-                {['Market Value', 'Distress Value', 'Liquidity Score', 'Fraud Detection', 'AI Analysis'].map((f, i) => (
-                  <span key={i} className="text-[0.72rem] font-semibold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(0,255,204,0.06)', border: '1px solid rgba(0,255,204,0.14)', color: '#00d4aa' }}>{f}</span>
-                ))}
-              </div>
+              <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center mb-5"><Building2 size={28} style={{ color: 'var(--text4)' }} /></div>
+              <h2 className="text-lg font-bold mb-2" style={{ color: 'var(--text2)' }}>Collateral Valuation Engine</h2>
+              <p className="text-[0.82rem] max-w-md leading-relaxed" style={{ color: 'var(--text3)' }}>Configure property details and click <strong className="text-teal-400">VALUATE</strong> to run the 11-agent pipeline. Hover over any metric to see its formula.</p>
             </div>
           )}
 
@@ -574,10 +567,7 @@ export default function App() {
             </div>
           )}
 
-          {d && !loading && (() => {
-            const hasIncome = !!ins.income
-            const sn = (base) => String(hasIncome ? base : base - 1)
-            return (
+          {d && !loading && (
             <div className="p-4 md:p-6 space-y-4">
               {/* ─── Property Summary ─── */}
               <PropertySummary input={lastInput} />
@@ -595,78 +585,28 @@ export default function App() {
               <Tooltip id="ltv">
                 <div className="glass rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${d.collateral_recommendation?.includes('accept') ? 'bg-emerald-500/12' : 'bg-amber-500/12'}`}
-                      style={{ border: `1px solid ${d.collateral_recommendation?.includes('accept') ? 'rgba(52,211,153,0.2)' : 'rgba(251,191,36,0.2)'}` }}>
-                      {d.collateral_recommendation?.includes('accept') ? <CheckCircle2 size={22} className="text-emerald-400" /> : <AlertTriangle size={22} className="text-amber-400" />}
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${d.collateral_recommendation?.includes('accept') ? 'bg-emerald-500/10' : 'bg-amber-500/10'}`}>
+                      {d.collateral_recommendation?.includes('accept') ? <CheckCircle2 size={20} className="text-emerald-400" /> : <AlertTriangle size={20} className="text-amber-400" />}
                     </div>
                     <div>
-                      <div className="text-[0.65rem] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'var(--text4)' }}>Collateral Decision</div>
-                      <div className={`text-xl font-extrabold tracking-wide ${d.collateral_recommendation?.includes('accept') ? 'grad-teal' : 'grad-amber'}`}>
+                      <div className="text-[0.58rem] uppercase tracking-widest" style={{ color: 'var(--text4)' }}>Collateral Decision</div>
+                      <div className={`text-lg font-bold ${d.collateral_recommendation?.includes('accept') ? 'text-emerald-400' : 'text-amber-400'}`}>
                         {(d.collateral_recommendation || '').replace(/_/g, ' ').toUpperCase()}
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
-                    <div className="text-center">
-                      <div className="text-[0.65rem] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'var(--text4)' }}>Recommended LTV</div>
-                      <div className="num text-3xl font-extrabold grad-teal"><AnimatedNumber value={d.recommended_ltv_pct} />%</div>
-                    </div>
-                    <div className="h-10 w-px" style={{ background: 'var(--border-h)' }} />
-                    <div className="text-center">
-                      <div className="text-[0.65rem] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'var(--text4)' }}>Sale Window</div>
-                      <div className="num text-xl font-extrabold" style={{ color: 'var(--text)' }}>{d.estimated_time_to_sell_days?.[0]}–{d.estimated_time_to_sell_days?.[1]} <span className="text-[0.85rem] font-medium" style={{ color: 'var(--text4)' }}>days</span></div>
-                    </div>
+                    <div className="text-center"><div className="text-[0.58rem] uppercase tracking-widest" style={{ color: 'var(--text4)' }}>LTV</div><div className="num text-2xl font-bold text-teal-400"><AnimatedNumber value={d.recommended_ltv_pct} />%</div></div>
+                    <div className="h-10 w-px" style={{ background: 'var(--border)' }} />
+                    <div className="text-center"><div className="text-[0.58rem] uppercase tracking-widest" style={{ color: 'var(--text4)' }}>Sale Window</div><div className="num text-lg font-bold">{d.estimated_time_to_sell_days?.[0]}–{d.estimated_time_to_sell_days?.[1]} <span className="text-sm" style={{ color: 'var(--text4)' }}>days</span></div></div>
                   </div>
                 </div>
               </Tooltip>
 
-              {/* ─── Collateral Value Matrix ─── */}
-              <div className="glass rounded-2xl p-5 print-section">
-                <div className="flex items-center gap-2 mb-4">
-                  <Landmark size={15} className="text-teal-400" />
-                  <span className="text-[0.72rem] font-bold uppercase tracking-widest grad-teal">Collateral Value Summary</span>
-                  <span className="ml-auto text-[0.58rem] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/20">IBA / NHB Format</span>
-                </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  {[
-                    { label: 'Fair Market Value', sub: `${fmt(d.market_value_range?.[0])} – ${fmt(d.market_value_range?.[1])}`, val: fmt((d.market_value_range?.[0] + d.market_value_range?.[1]) / 2), border: 'rgba(0,212,170,0.25)', color: '#00d4aa', desc: 'FMV (assessed)' },
-                    { label: 'Distress Sale Value', sub: `${fmt(d.distress_value_range?.[0])} – ${fmt(d.distress_value_range?.[1])}`, val: fmt((d.distress_value_range?.[0] + d.distress_value_range?.[1]) / 2), border: 'rgba(251,191,36,0.25)', color: '#f59e0b', desc: 'DSV (90-day)' },
-                    { label: 'Forced Sale Value', sub: '72 % of FMV · SARFAESI floor', val: fmt(d.forced_sale_value), border: 'rgba(239,68,68,0.25)', color: '#ef4444', desc: 'FSV (immediate)' },
-                    { label: 'Realizable Value', sub: 'After 5 % transaction costs', val: fmt(d.realizable_value), border: 'rgba(167,139,250,0.25)', color: '#a855f7', desc: 'Net proceeds' },
-                  ].map(({ label, sub, val, border, color, desc }) => (
-                    <div key={label} className="rounded-xl p-4" style={{ background: 'var(--bg)', border: `1px solid ${border}` }}>
-                      <div className="text-[0.58rem] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text4)' }}>{label}</div>
-                      <div className="num text-base font-extrabold" style={{ color }}>{val}</div>
-                      <div className="num text-[0.65rem] mt-0.5" style={{ color: 'var(--text3)' }}>{sub}</div>
-                      <div className="text-[0.58rem] mt-1.5 font-semibold" style={{ color: 'var(--text4)' }}>{desc}</div>
-                    </div>
-                  ))}
-                </div>
-                {d.reconstruction_value && (
-                  <div className="mt-3 rounded-xl px-4 py-3 flex items-center justify-between" style={{ background: 'var(--bg)', border: '1px solid rgba(99,102,241,0.2)' }}>
-                    <div>
-                      <span className="text-[0.6rem] uppercase tracking-wider font-semibold" style={{ color: 'var(--text4)' }}>Reconstruction / Insurance Replacement Value</span>
-                      <p className="text-[0.65rem] mt-0.5" style={{ color: 'var(--text3)' }}>Current construction cost × age depreciation · Used for fire insurance coverage</p>
-                    </div>
-                    <div className="num text-base font-extrabold text-indigo-400 shrink-0 ml-4">{fmt(d.reconstruction_value)}</div>
-                  </div>
-                )}
-              </div>
+              {/* ─── ALL SECTIONS SEQUENTIAL (no tabs) ─── */}
 
               {/* 3. Key Value Drivers */}
               <Section num="1" title="Key Value Drivers" icon={BarChart3} badge={`${d.key_drivers?.length || 0} factors`}>
-                {/* AI Overview */}
-                {(d.scenario_narrative?.most_likely || d.explanation) && (
-                  <div className="mb-4 p-3.5 rounded-xl" style={{ background: 'rgba(0,212,170,0.06)', border: '1px solid rgba(0,212,170,0.18)' }}>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[0.6rem] font-bold uppercase tracking-widest" style={{ color: '#00d4aa' }}>AI Overview</span>
-                      <span className="text-[0.55rem] px-1.5 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(0,212,170,0.12)', color: '#00d4aa', border: '1px solid rgba(0,212,170,0.25)' }}>Gemma4</span>
-                    </div>
-                    <p className="text-[0.75rem] leading-relaxed" style={{ color: 'var(--text2)' }}>
-                      {d.scenario_narrative?.most_likely || d.explanation}
-                    </p>
-                  </div>
-                )}
                 {d.key_drivers?.map((dr, i) => <DriverBar key={i} index={i} name={dr.factor} impact={dr.impact} agent={dr.source_agent} />)}
               </Section>
 
@@ -708,42 +648,28 @@ export default function App() {
                 </div>
               </Section>
 
-              {/* 5. Valuation Breakdown */}
+              {/* 5. Valuation Breakdown (FIXED) */}
               <Section num="3" title="Valuation Breakdown" icon={Info} badge="Master Formula" badgeColor="blue">
-                <div className="mt-3 p-4 rounded-xl" style={{ background: 'var(--bg)', border: '1px solid rgba(91,140,255,0.15)' }}>
-                  <p className="num text-[0.78rem] leading-loose" style={{ color: 'var(--text2)' }}>
-                    <strong className="text-white">V</strong> = <span className="text-teal-400 font-bold">₹{safe(tr.location_intel?.circle_rate_per_sqft?.toLocaleString())}</span>/sqft
-                    {' '}×{' '}<span className="text-teal-300 font-bold">{safe(lastInput?.built_up_area_sqft)}</span> sqft
-                    {' '}×{' '}<span className="text-blue-400 font-bold">{safe(tr.location_intel?.mcr)}</span> MCR
-                    {' '}×{' '}<span className="text-purple-400 font-bold">{safe(tr.location_intel?.f_loc)}</span> Loc
-                    {' '}×{' '}<span className={`font-bold ${tr.property_char?.f_age < 0.85 ? 'text-red-400' : 'text-amber-400'}`}>{safe(tr.property_char?.f_age)}</span> Age
-                    {' '}×{' '}<span className="text-blue-300 font-bold">{safe(tr.property_char?.f_cfg)}</span> Cfg
-                    {' '}×{' '}<span className="text-emerald-400 font-bold">{safe(tr.legal?.f_legal)}</span> Legal
-                    {' '}×{' '}<span className="text-blue-400 font-bold">{safe(tr.property_char?.f_floor)}</span> Floor
-                    {tr.legal?.f_regulatory != null && tr.legal.f_regulatory < 1.0 && (
-                      <>{' '}×{' '}<span className="text-orange-400 font-bold">{safe(tr.legal?.f_regulatory)}</span> Reg</>
+                <div className="mt-2 p-4 rounded-xl" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
+                  <p className="num text-[0.72rem] leading-relaxed" style={{ color: 'var(--text2)' }}>
+                    <strong style={{ color: 'var(--text)' }}>V</strong> = <span className="text-teal-400">₹{safe(tr.location_intel?.circle_rate_per_sqft?.toLocaleString())}</span>/sqft
+                    × <span className="text-teal-400">{safe(lastInput?.built_up_area_sqft)}</span> sqft
+                    × <span className="text-blue-400">{safe(tr.location_intel?.mcr)}</span> MCR
+                    × <span className="text-purple-400">{safe(tr.location_intel?.f_loc)}</span> Loc
+                    × <span className={tr.property_char?.f_age < 0.85 ? 'text-red-400' : 'text-amber-400'}>{safe(tr.property_char?.f_age)}</span> Age
+                    × <span className="text-blue-400">{safe(tr.property_char?.f_cfg)}</span> Cfg
+                    × <span className="text-emerald-400">{safe(tr.legal?.f_legal)}</span> Legal
+                    × <span className="text-blue-400">{safe(tr.property_char?.f_floor)}</span> Floor
+                    {tr.valuation?.f_regulatory != null && tr.valuation?.f_regulatory !== 1 && (
+                      <> × <span className={tr.valuation.f_regulatory > 1 ? 'text-emerald-400' : 'text-red-400'}>{safe(tr.valuation?.f_regulatory)}</span> RERA</>
                     )}
                   </p>
-                  <p className="num text-[1rem] font-extrabold mt-3 grad-teal">
-                    = {fmt(tr.valuation?.point_estimate)} <span className="text-[0.78rem] font-normal" style={{ color: 'var(--text3)', WebkitTextFillColor: 'var(--text3)' }}>(point estimate)</span>
+                  <p className="num text-[0.82rem] font-bold mt-2" style={{ color: 'var(--text)' }}>
+                    = {fmt(tr.valuation?.point_estimate)} <span className="text-[0.72rem] font-normal" style={{ color: 'var(--text3)' }}>(point estimate)</span>
                   </p>
-                  <p className="num text-[0.78rem] mt-1" style={{ color: 'var(--text3)' }}>
-                    ± {safe(((tr.valuation?.uncertainty || 0) * 100).toFixed(1))}% uncertainty → {fmt(d.market_value_range?.[0])} to {fmt(d.market_value_range?.[1])}
+                  <p className="num text-[0.72rem] mt-1" style={{ color: 'var(--text3)' }}>
+                    ± {safe(((tr.valuation?.uncertainty || 0) * 100).toFixed(1))}% uncertainty = {fmt(d.market_value_range?.[0])} to {fmt(d.market_value_range?.[1])}
                   </p>
-                  {tr.valuation?.independent_estimates && (
-                    <div className="mt-3 pt-3 grid grid-cols-3 gap-2" style={{ borderTop: '1px solid var(--border)' }}>
-                      {[
-                        ['V1 Circle Rate', tr.valuation.independent_estimates.v1_circle_rate],
-                        ['V2 Comparables', tr.valuation.independent_estimates.v2_comparables],
-                        ['V3 Income Approach', tr.valuation.independent_estimates.v3_income_approach],
-                      ].map(([label, val]) => val ? (
-                        <div key={label} className="text-center">
-                          <div className="text-[0.58rem] uppercase tracking-wider" style={{ color: 'var(--text4)' }}>{label}</div>
-                          <div className="num text-[0.78rem] font-bold mt-0.5" style={{ color: 'var(--text2)' }}>{fmt(val)}</div>
-                        </div>
-                      ) : null)}
-                    </div>
-                  )}
                 </div>
                 <div className="mt-3">
                   <FactorRow label="Circle Rate" value={`₹${safe(tr.location_intel?.circle_rate_per_sqft?.toLocaleString())}/sqft`} impact="0" tooltipId="circle_rate" />
@@ -751,28 +677,22 @@ export default function App() {
                   <FactorRow label="Micro-Location Premium" value={safe(tr.location_intel?.f_loc)} impact={((tr.location_intel?.f_loc || 1) - 1) * 100} tooltipId="f_loc" />
                   <FactorRow label="Age Depreciation" value={safe(tr.property_char?.f_age)} impact={((tr.property_char?.f_age || 1) - 1) * 100} tooltipId="f_age" />
                   <FactorRow label="Configuration Factor" value={safe(tr.property_char?.f_cfg)} impact={((tr.property_char?.f_cfg || 1) - 1) * 100} tooltipId="f_cfg" />
-                  <FactorRow label="Legal Clarity (Ownership)" value={safe(tr.legal?.f_legal)} impact={((tr.legal?.f_legal || 1) - 1) * 100} tooltipId="f_legal" />
+                  <FactorRow label="Legal Clarity" value={safe(tr.legal?.f_legal)} impact={((tr.legal?.f_legal || 1) - 1) * 100} tooltipId="f_legal" />
                   <FactorRow label="Floor Adjustment" value={safe(tr.property_char?.f_floor)} impact={((tr.property_char?.f_floor || 1) - 1) * 100} tooltipId="f_floor" />
-                  {tr.legal?.f_regulatory != null && tr.legal.f_regulatory < 1.0 && (
-                    <FactorRow label="Regulatory Compliance" value={safe(tr.legal?.f_regulatory)} impact={((tr.legal?.f_regulatory || 1) - 1) * 100} tooltipId="f_regulatory" />
+                  {tr.valuation?.f_regulatory != null && (
+                    <FactorRow label="RERA Regulatory" value={safe(tr.valuation?.f_regulatory)} impact={((tr.valuation?.f_regulatory || 1) - 1) * 100} tooltipId="f_regulatory" />
                   )}
                   <StatRow label="Infrastructure Score" value={safe(tr.location_intel?.infra_score)} tooltipId="infra_score" />
                   <StatRow label="Neighbourhood Quality" value={safe(tr.location_intel?.neighborhood_quality)} tooltipId="s_nbhd" />
                   <StatRow label="Point Estimate" value={fmt(tr.valuation?.point_estimate)} highlight />
-                  <StatRow label="Weighted Estimate (V1+V2+V3)" value={fmt(tr.valuation?.weighted_estimate)} />
                   <StatRow label="Uncertainty Band" value={`±${safe(((tr.valuation?.uncertainty || 0) * 100).toFixed(1))}%`} tooltipId="uncertainty" />
                 </div>
               </Section>
 
               {/* 6. AI Explanation */}
               <Section num="4" title="AI Explanation" icon={Sparkles} badge="Gemma4 LLM" badgeColor="purple">
-                <p className="text-[0.95rem] leading-[1.85] mt-3" style={{ color: 'var(--text2)' }}>{d.explanation}</p>
-                {d.ltv_reasoning && (
-                  <p className="text-[0.82rem] mt-4 italic px-4 py-3 rounded-xl"
-                    style={{ color: 'var(--text3)', background: 'rgba(167,139,250,0.06)', border: '1px solid rgba(167,139,250,0.12)' }}>
-                    <span className="text-purple-400 font-semibold not-italic">LTV rationale:</span> {d.ltv_reasoning}
-                  </p>
-                )}
+                <p className="text-[0.85rem] leading-[1.8] mt-2" style={{ color: 'var(--text2)' }}>{d.explanation}</p>
+                {d.ltv_reasoning && <p className="text-[0.72rem] mt-3 italic" style={{ color: 'var(--text3)' }}>LTV rationale: {d.ltv_reasoning}</p>}
               </Section>
 
               {/* 7. Infrastructure */}
@@ -821,45 +741,8 @@ export default function App() {
                 </div>
               </Section>
 
-              {/* Income Analysis — shown only for rented properties */}
-              {ins.income && (
-                <Section num="8" title="Income Analysis" icon={TrendingUp} badge="Rental Capitalisation" badgeColor="teal">
-                  <div className="grid grid-cols-3 gap-3 mt-3">
-                    {[
-                      { label: 'Gross Rental Yield', val: `${ins.income.gross_rental_yield_pct}%`, sub: 'Annual rent / FMV', color: '#00d4aa', border: 'rgba(0,212,170,0.2)' },
-                      { label: 'Net Rental Yield', val: `${ins.income.net_rental_yield_pct}%`, sub: 'NOI / FMV', color: '#60a5fa', border: 'rgba(96,165,250,0.2)' },
-                      ins.income.dscr ? { label: 'DSCR', val: `${ins.income.dscr}×`, sub: 'RBI min 1.25×', color: ins.income.dscr >= 1.25 ? '#00d4aa' : ins.income.dscr >= 1.0 ? '#f59e0b' : '#ef4444', border: ins.income.dscr >= 1.25 ? 'rgba(0,212,170,0.2)' : 'rgba(239,68,68,0.2)' } : null,
-                    ].filter(Boolean).map(({ label, val, sub, color, border }) => (
-                      <div key={label} className="rounded-xl p-4 text-center" style={{ background: 'var(--bg)', border: `1px solid ${border}` }}>
-                        <div className="text-[0.58rem] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text4)' }}>{label}</div>
-                        <div className="num text-xl font-extrabold" style={{ color }}>{val}</div>
-                        <div className="text-[0.62rem] mt-1" style={{ color: 'var(--text4)' }}>{sub}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3">
-                    <StatRow label="Monthly Rent" value={fmt(ins.income.monthly_rent)} />
-                    <StatRow label="Gross Annual Rent" value={fmt(ins.income.gross_annual_rent)} />
-                    <StatRow label="Vacancy Assumed" value={`${ins.income.vacancy_rate_pct}%`} />
-                    <StatRow label="Operating Expense Ratio" value={`${ins.income.opex_ratio_pct}%`} />
-                    <StatRow label="Net Operating Income (NOI)" value={fmt(ins.income.noi)} highlight />
-                    {ins.income.grm && <StatRow label="Gross Rent Multiplier (GRM)" value={`${ins.income.grm}×`} tooltipId="grm" />}
-                    {ins.income.rcr && <StatRow label="Rent Coverage Ratio" value={`${ins.income.rcr}×`} color={ins.income.rcr >= 1.25 ? 'text-emerald-400' : 'text-amber-400'} />}
-                    {ins.income.monthly_emi && <StatRow label="Estimated Monthly EMI" value={fmt(ins.income.monthly_emi)} />}
-                    {ins.income.loan_amount_requested && <StatRow label="Loan Amount (Requested)" value={fmt(ins.income.loan_amount_requested)} />}
-                  </div>
-                  <div className="mt-3 p-3 rounded-xl" style={{ background: 'rgba(0,212,170,0.04)', border: '1px solid rgba(0,212,170,0.1)' }}>
-                    <p className="text-[0.7rem]" style={{ color: 'var(--text3)' }}>
-                      <span className="text-teal-400 font-semibold">Income Approach (V3):</span>{' '}
-                      Value capitalised from NOI using tier-specific net cap rate. NOI = Gross Rent × (1−Vacancy) × (1−Opex).
-                      {ins.income.dscr && ins.income.dscr < 1.25 && <span className="text-amber-400 font-semibold"> DSCR below 1.25× RBI guideline for CRE.</span>}
-                    </p>
-                  </div>
-                </Section>
-              )}
-
-              {/* Investment Outlook */}
-              <Section num={sn(9)} title="Investment & Macro Outlook" icon={Brain} badge={safe(ins.valuation?.market_cycle)} badgeColor="purple">
+              {/* 10. Investment Outlook */}
+              <Section num="8" title="Investment & Macro Outlook" icon={Brain} badge={safe(ins.valuation?.market_cycle)} badgeColor="purple">
                 <div className="mt-2 p-3 rounded-xl" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                   <p className="text-[0.78rem] leading-relaxed" style={{ color: 'var(--text2)' }}>{safe(ins.valuation?.investment_outlook, 'No outlook available')}</p>
                 </div>
@@ -871,52 +754,8 @@ export default function App() {
                 </div>
               </Section>
 
-              {/* Legal & Compliance */}
-              {ins.legal_compliance && (
-                <Section num={sn(10)} title="Legal & Regulatory Compliance" icon={Shield}
-                  badge={ins.legal_compliance.legal_risk_category?.toUpperCase() || 'UNKNOWN'}
-                  badgeColor={ins.legal_compliance.legal_risk_category === 'green' ? 'green' : ins.legal_compliance.legal_risk_category === 'red' ? 'red' : 'amber'}>
-                  <div className="grid grid-cols-3 gap-3 mt-3">
-                    {[
-                      ['RERA', ins.legal_compliance.rera_registered, 'N/A'],
-                      ['Occupancy Cert.', ins.legal_compliance.occupancy_certificate, 'Unknown'],
-                      ['Completion Cert.', ins.legal_compliance.completion_certificate, 'Unknown'],
-                    ].map(([label, val, fallback]) => (
-                      <div key={label} className="rounded-xl p-3 text-center" style={{
-                        background: 'var(--bg)',
-                        border: `1px solid ${val === true ? 'rgba(52,211,153,0.25)' : val === false ? 'rgba(239,68,68,0.25)' : 'var(--border)'}`,
-                      }}>
-                        <div className="text-[0.58rem] uppercase tracking-wider mb-1.5 font-semibold" style={{ color: 'var(--text4)' }}>{label}</div>
-                        <span className={`text-sm font-bold ${val === true ? 'text-emerald-400' : val === false ? 'text-red-400' : ''}`} style={val == null ? { color: 'var(--text3)' } : undefined}>
-                          {val === true ? '✓ Obtained' : val === false ? '✗ Missing' : fallback}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3">
-                    <StatRow label="Ownership Type" value={safe(ins.legal_compliance.ownership)} />
-                    <StatRow label="Title Status" value={safe(ins.legal_compliance.title_status)} color={ins.legal_compliance.title_status === 'clear' ? 'text-emerald-400' : ins.legal_compliance.title_status === 'disputed' ? 'text-red-400' : ''} />
-                    <StatRow label="Encumbrance Status" value={safe(ins.legal_compliance.encumbrance_status)?.replace(/_/g, ' ')} color={ins.legal_compliance.encumbrance_status === 'clear' || ins.legal_compliance.encumbrance_status === 'unknown' ? '' : 'text-amber-400'} />
-                    <StatRow label="Litigation Pending" value={ins.legal_compliance.litigation_pending === true ? 'YES — High Risk' : ins.legal_compliance.litigation_pending === false ? 'No' : 'Unknown'} color={ins.legal_compliance.litigation_pending === true ? 'text-red-400' : ins.legal_compliance.litigation_pending === false ? 'text-emerald-400' : ''} />
-                    {ins.legal_compliance.plan_deviation_pct != null && (
-                      <StatRow label="Plan Area Deviation" value={`${ins.legal_compliance.plan_deviation_pct}%`} color={ins.legal_compliance.plan_deviation_pct > 10 ? 'text-amber-400' : 'text-emerald-400'} />
-                    )}
-                    <StatRow label="Title & Ownership Factor (f_legal)" value={safe(ins.legal_compliance.f_legal)} />
-                    <StatRow label="Regulatory Compliance Factor" value={safe(ins.legal_compliance.f_regulatory)} color={ins.legal_compliance.f_regulatory < 0.90 ? 'text-amber-400' : 'text-emerald-400'} />
-                    <StatRow label="Combined Legal Multiplier" value={safe(ins.legal_compliance.legal_multiplier)} highlight color={ins.legal_compliance.legal_multiplier < 0.85 ? 'text-red-400' : ''} />
-                  </div>
-                  {ins.legal_compliance.warnings?.length > 0 && (
-                    <div className="mt-3 space-y-2">
-                      {ins.legal_compliance.warnings.map((w, i) => (
-                        <FraudFlag key={i} flag={w.flag} severity={w.severity} explanation={w.explanation} source="legal" />
-                      ))}
-                    </div>
-                  )}
-                </Section>
-              )}
-
-              {/* Fraud & Risk */}
-              <Section num={sn(11)} title="Fraud & Risk Analysis" icon={Shield} badge={`${ins.fraud?.total_flags || 0} flags`} badgeColor={ins.fraud?.total_flags ? 'red' : 'green'}>
+              {/* 11. Fraud & Risk */}
+              <Section num="9" title="Fraud & Risk Analysis" icon={Shield} badge={`${ins.fraud?.total_flags || 0} flags`} badgeColor={ins.fraud?.total_flags ? 'red' : 'green'}>
                 <div className="grid grid-cols-3 gap-3 mt-3 mb-4">
                   {[['Rule-Based', ins.fraud?.rule_based_count, 'text-blue-400'], ['AI-Detected', ins.fraud?.llm_detected_count, 'text-purple-400'], ['Overall Risk', ins.fraud?.overall_risk, ins.fraud?.overall_risk === 'low' ? 'text-emerald-400' : 'text-red-400']].map(([l, v, c]) => (
                     <div key={l} className="rounded-xl p-3 text-center" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
@@ -938,19 +777,20 @@ export default function App() {
                 )}
               </Section>
 
-              {/* Agent Trace */}
-              <Section num={sn(12)} title="Full Agent Trace — 11 Agents" icon={FileText} badge="JSON" badgeColor="purple" defaultOpen={false}>
+              {/* 12. Agent Trace */}
+              <Section num="10" title="Full Agent Trace — 11 Agents" icon={FileText} badge="JSON" badgeColor="purple" defaultOpen={false}>
                 <pre className="mt-3 text-[0.65rem] num p-5 rounded-xl overflow-auto max-h-[600px] leading-relaxed whitespace-pre-wrap" style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text3)' }}>
                   {JSON.stringify(tr, null, 2)}
                 </pre>
               </Section>
             </div>
-            )
-          })()}
+          )}
         </main>
       </div>
 
       <div className="print-footer">Generated by Collateral Valuation Engine — 11-Agent AI Pipeline — {new Date().toLocaleString('en-IN')}<br />Poonawalla Fincorp — AI-Powered Estimation Portal — Confidential</div>
+
+      <ChatBot onFieldsExtracted={handleFieldsExtracted} onValuationResult={handleChatValuation} />
     </div>
   )
 }

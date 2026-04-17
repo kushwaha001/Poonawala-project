@@ -4,29 +4,321 @@ Maharashtra,Mumbai,Bandra West,18000,2024-04-01
 Maharashtra,Mumbai,Powai,14000,2024-04-01
 Maharashtra,Mumbai,Borivali,9000,2024-04-01
 Maharashtra,Mumbai,Dadar,15000,2024-04-01
-Delhi,Delhi,Dwarka,8500,2024-04-01
-Delhi,Delhi,Connaught Place,22000,2024-04-01
-Delhi,Delhi,Rohini,7500,2024-04-01
-Delhi,Delhi,Saket,11000,2024-04-01
-Delhi,Delhi,Vasant Kunj,10000,2024-04-01
-Karnataka,Bangalore,Whitefield,7500,2024-04-01
-Karnataka,Bangalore,Koramangala,12000,2024-04-01
-Karnataka,Bangalore,Electronic City,5500,2024-04-01
-Karnataka,Bangalore,Indiranagar,13000,2024-04-01
-Karnataka,Bangalore,Jayanagar,9500,2024-04-01
+Maharashtra,Mumbai,Worli,20000,2024-04-01
+Maharashtra,Mumbai,Chembur,10000,2024-04-01
+Maharashtra,Mumbai,Malad,9500,2024-04-01
+Maharashtra,Mumbai,Goregaon,10000,2024-04-01
+Maharashtra,Mumbai,Vikhroli,8500,2024-04-01
+Maharashtra,Thane,Thane West,8000,2024-04-01
+Maharashtra,Thane,Thane East,7500,2024-04-01
+Maharashtra,Thane,Kalyan,5500,2024-04-01
+Maharashtra,Thane,Dombivli,5000,2024-04-01
+Maharashtra,Thane,Ulhasnagar,4500,2024-04-01
+Maharashtra,Navi Mumbai,Vashi,9000,2024-04-01
+Maharashtra,Navi Mumbai,Kharghar,7500,2024-04-01
+Maharashtra,Navi Mumbai,Nerul,8500,2024-04-01
+Maharashtra,Navi Mumbai,Belapur,8000,2024-04-01
+Maharashtra,Navi Mumbai,Panvel,6000,2024-04-01
 Maharashtra,Pune,Hinjewadi,6500,2024-04-01
 Maharashtra,Pune,Kothrud,8500,2024-04-01
 Maharashtra,Pune,Viman Nagar,7500,2024-04-01
 Maharashtra,Pune,Baner,7000,2024-04-01
 Maharashtra,Pune,Wakad,6000,2024-04-01
+Maharashtra,Pune,Koregaon Park,9000,2024-04-01
+Maharashtra,Pune,Kalyani Nagar,8000,2024-04-01
+Maharashtra,Pune,Aundh,7500,2024-04-01
+Maharashtra,Pune,Hadapsar,6000,2024-04-01
+Maharashtra,Pune,Kharadi,6500,2024-04-01
+Maharashtra,Pune,PCMC,5200,2024-04-01
+Maharashtra,Pune,Pimpri,5000,2024-04-01
+Maharashtra,Pune,Chinchwad,5500,2024-04-01
+Maharashtra,Pune,Nigdi,5800,2024-04-01
+Maharashtra,Pune,Bhosari,4200,2024-04-01
+Maharashtra,Pune,Moshi,3800,2024-04-01
+Maharashtra,Pune,Akurdi,4800,2024-04-01
 Maharashtra,Nagpur,Dharampeth,5500,2024-04-01
 Maharashtra,Nagpur,Sitabuldi,6000,2024-04-01
 Maharashtra,Nagpur,Sadar,5000,2024-04-01
 Maharashtra,Nagpur,Manish Nagar,4500,2024-04-01
-Rajasthan,Jaipur,Malviya Nagar,5000,2024-04-01
-Rajasthan,Jaipur,Vaishali Nagar,4500,2024-04-01
+Maharashtra,Nagpur,Ramdaspeth,5500,2024-04-01
+Maharashtra,Nagpur,Wardhaman Nagar,4000,2024-04-01
+Maharashtra,Nashik,Gangapur Road,4500,2024-04-01
+Maharashtra,Nashik,Cidco,4000,2024-04-01
+Maharashtra,Nashik,Dwarka,4200,2024-04-01
+Maharashtra,Aurangabad,Cidco Aurangabad,4000,2024-04-01
+Maharashtra,Aurangabad,Garkheda,3800,2024-04-01
+Maharashtra,Solapur,Vijapur Road,2800,2024-04-01
+Maharashtra,Kolhapur,Tarabai Park,3500,2024-04-01
+Maharashtra,Amravati,Rajapeth,2800,2024-04-01
+Delhi,Delhi,Dwarka,8500,2024-04-01
+Delhi,Delhi,Connaught Place,22000,2024-04-01
+Delhi,Delhi,Rohini,7500,2024-04-01
+Delhi,Delhi,Saket,11000,2024-04-01
+Delhi,Delhi,Vasant Kunj,10000,2024-04-01
+Delhi,Delhi,Lajpat Nagar,9000,2024-04-01
+Delhi,Delhi,Janakpuri,8000,2024-04-01
+Delhi,Delhi,Pitampura,7000,2024-04-01
+Delhi,Delhi,Greater Kailash,12000,2024-04-01
+Delhi,Delhi,Defence Colony,14000,2024-04-01
+Delhi,Delhi,Karol Bagh,8500,2024-04-01
+Delhi,Delhi,Mayur Vihar,7000,2024-04-01
+Delhi,Delhi,Preet Vihar,7500,2024-04-01
+Delhi,Delhi,Uttam Nagar,6500,2024-04-01
+Delhi,Delhi,Shahdara,6000,2024-04-01
+Haryana,Gurugram,Sector 57,10000,2024-04-01
+Haryana,Gurugram,DLF Phase 4,12000,2024-04-01
+Haryana,Gurugram,Sohna Road,8000,2024-04-01
+Haryana,Gurugram,Golf Course Road,14000,2024-04-01
+Haryana,Gurugram,Palam Vihar,7000,2024-04-01
+Haryana,Faridabad,Sector 14,5500,2024-04-01
+Haryana,Faridabad,Neharpar,5000,2024-04-01
+Haryana,Faridabad,NIT,5500,2024-04-01
+Haryana,Rohtak,Civil Lines,3800,2024-04-01
+Haryana,Panipat,Model Town,3500,2024-04-01
+Haryana,Karnal,Sector 6,4200,2024-04-01
+Haryana,Hisar,Urban Estate,3500,2024-04-01
+Haryana,Ambala,Model Town,4000,2024-04-01
+Haryana,Sonipat,Sector 23,3800,2024-04-01
+Uttar Pradesh,Ghaziabad,Indirapuram,6500,2024-04-01
+Uttar Pradesh,Ghaziabad,Raj Nagar Extension,5500,2024-04-01
+Uttar Pradesh,Ghaziabad,Vaishali,6000,2024-04-01
+Uttar Pradesh,Noida,Sector 62,7500,2024-04-01
+Uttar Pradesh,Noida,Sector 137,6000,2024-04-01
+Uttar Pradesh,Noida,Sector 50,8000,2024-04-01
+Uttar Pradesh,Noida,Greater Noida West,5000,2024-04-01
+Uttar Pradesh,Agra,Fatehabad Road,4500,2024-04-01
+Uttar Pradesh,Agra,Shahganj,4000,2024-04-01
+Uttar Pradesh,Agra,Kamla Nagar,4200,2024-04-01
+Uttar Pradesh,Kanpur,Civil Lines,4500,2024-04-01
+Uttar Pradesh,Kanpur,Kakadeo,5000,2024-04-01
+Uttar Pradesh,Kanpur,Kidwai Nagar,4000,2024-04-01
+Uttar Pradesh,Prayagraj,Civil Lines,4500,2024-04-01
+Uttar Pradesh,Prayagraj,George Town,4000,2024-04-01
+Uttar Pradesh,Prayagraj,Naini,3500,2024-04-01
+Uttar Pradesh,Varanasi,Sigra,4800,2024-04-01
+Uttar Pradesh,Varanasi,Lanka,4500,2024-04-01
+Uttar Pradesh,Varanasi,Cantonment,5200,2024-04-01
+Uttar Pradesh,Varanasi,Nadesar,3800,2024-04-01
+Uttar Pradesh,Varanasi,Pandeypur,3000,2024-04-01
+Uttar Pradesh,Meerut,Shastri Nagar,5000,2024-04-01
+Uttar Pradesh,Meerut,Pallavpuram,4500,2024-04-01
+Uttar Pradesh,Mathura,Vrindavan Road,3800,2024-04-01
 Uttar Pradesh,Lucknow,Gomti Nagar,5500,2024-04-01
 Uttar Pradesh,Lucknow,Hazratganj,6500,2024-04-01
 Uttar Pradesh,Lucknow,Aliganj,4000,2024-04-01
+Uttar Pradesh,Lucknow,Indira Nagar,5000,2024-04-01
+Uttar Pradesh,Lucknow,Alambagh,4500,2024-04-01
 Uttar Pradesh,Gorakhpur,Civil Lines,3000,2024-04-01
 Uttar Pradesh,Gorakhpur,Golghar,2500,2024-04-01
+Uttar Pradesh,Gorakhpur,Betiahata,2800,2024-04-01
+Karnataka,Bangalore,Whitefield,7500,2024-04-01
+Karnataka,Bangalore,Koramangala,12000,2024-04-01
+Karnataka,Bangalore,Electronic City,5500,2024-04-01
+Karnataka,Bangalore,Indiranagar,13000,2024-04-01
+Karnataka,Bangalore,Jayanagar,9500,2024-04-01
+Karnataka,Bangalore,Hebbal,8000,2024-04-01
+Karnataka,Bangalore,Sarjapur Road,7000,2024-04-01
+Karnataka,Bangalore,Bannerghatta Road,6500,2024-04-01
+Karnataka,Bangalore,JP Nagar,8500,2024-04-01
+Karnataka,Bangalore,HSR Layout,9000,2024-04-01
+Karnataka,Bangalore,Yeshwanthpur,7500,2024-04-01
+Karnataka,Bangalore,Malleshwaram,10000,2024-04-01
+Karnataka,Mysuru,Vijayanagar,4500,2024-04-01
+Karnataka,Mysuru,Kuvempunagar,4000,2024-04-01
+Karnataka,Mysuru,Jayalakshmipuram,4800,2024-04-01
+Karnataka,Hubli,Vidyanagar,3500,2024-04-01
+Karnataka,Dharwad,PB Road,3000,2024-04-01
+Karnataka,Mangaluru,Bejai,5000,2024-04-01
+Karnataka,Mangaluru,Kadri,5500,2024-04-01
+Karnataka,Belagavi,Shivaji Nagar,3200,2024-04-01
+Karnataka,Tumkur,SS Puram,2800,2024-04-01
+Karnataka,Davangere,P J Extension,2500,2024-04-01
+Tamil Nadu,Chennai,T Nagar,12000,2024-04-01
+Tamil Nadu,Chennai,Anna Nagar,10000,2024-04-01
+Tamil Nadu,Chennai,Adyar,11000,2024-04-01
+Tamil Nadu,Chennai,Velachery,7500,2024-04-01
+Tamil Nadu,Chennai,Porur,6500,2024-04-01
+Tamil Nadu,Chennai,OMR,7000,2024-04-01
+Tamil Nadu,Chennai,Perambur,5500,2024-04-01
+Tamil Nadu,Chennai,Tambaram,5000,2024-04-01
+Tamil Nadu,Chennai,Chromepet,5500,2024-04-01
+Tamil Nadu,Coimbatore,RS Puram,5500,2024-04-01
+Tamil Nadu,Coimbatore,Gandhipuram,5000,2024-04-01
+Tamil Nadu,Coimbatore,Peelamedu,5500,2024-04-01
+Tamil Nadu,Madurai,Anna Nagar Madurai,4500,2024-04-01
+Tamil Nadu,Madurai,KK Nagar Madurai,4200,2024-04-01
+Tamil Nadu,Trichy,Thillai Nagar,4000,2024-04-01
+Tamil Nadu,Trichy,KK Nagar Trichy,3800,2024-04-01
+Tamil Nadu,Salem,Fairlands,3500,2024-04-01
+Tamil Nadu,Tirunelveli,Palayamkottai,3000,2024-04-01
+Tamil Nadu,Vellore,Katpadi,3200,2024-04-01
+Tamil Nadu,Erode,Perundurai Road,3000,2024-04-01
+Telangana,Hyderabad,Gachibowli,9000,2024-04-01
+Telangana,Hyderabad,Banjara Hills,14000,2024-04-01
+Telangana,Hyderabad,Jubilee Hills,15000,2024-04-01
+Telangana,Hyderabad,Madhapur,10000,2024-04-01
+Telangana,Hyderabad,Kondapur,8500,2024-04-01
+Telangana,Hyderabad,Kukatpally,7000,2024-04-01
+Telangana,Hyderabad,Secunderabad,7500,2024-04-01
+Telangana,Hyderabad,Miyapur,6500,2024-04-01
+Telangana,Hyderabad,LB Nagar,5500,2024-04-01
+Telangana,Hyderabad,Uppal,5500,2024-04-01
+Telangana,Warangal,Hanamkonda,3800,2024-04-01
+Telangana,Warangal,Kazipet,3500,2024-04-01
+Telangana,Karimnagar,Mukarampura,3200,2024-04-01
+Andhra Pradesh,Visakhapatnam,MVP Colony,6000,2024-04-01
+Andhra Pradesh,Visakhapatnam,Seethammadhara,6500,2024-04-01
+Andhra Pradesh,Visakhapatnam,Gajuwaka,4500,2024-04-01
+Andhra Pradesh,Vijayawada,Benz Circle,5500,2024-04-01
+Andhra Pradesh,Vijayawada,Governorpet,5000,2024-04-01
+Andhra Pradesh,Vijayawada,MG Road,5500,2024-04-01
+Andhra Pradesh,Guntur,Brodipet,4500,2024-04-01
+Andhra Pradesh,Tirupati,Tiruchanur Road,4500,2024-04-01
+Andhra Pradesh,Nellore,Brundavan Gardens,3500,2024-04-01
+Andhra Pradesh,Kakinada,Jagannaickpur,3500,2024-04-01
+Gujarat,Ahmedabad,Satellite,7000,2024-04-01
+Gujarat,Ahmedabad,Bodakdev,8000,2024-04-01
+Gujarat,Ahmedabad,Navrangpura,7500,2024-04-01
+Gujarat,Ahmedabad,Bopal,5500,2024-04-01
+Gujarat,Ahmedabad,Prahlad Nagar,7000,2024-04-01
+Gujarat,Ahmedabad,Maninagar,5000,2024-04-01
+Gujarat,Ahmedabad,Chandkheda,5000,2024-04-01
+Gujarat,Surat,Adajan,5500,2024-04-01
+Gujarat,Surat,Vesu,5000,2024-04-01
+Gujarat,Surat,Athwa,5500,2024-04-01
+Gujarat,Vadodara,Alkapuri,5500,2024-04-01
+Gujarat,Vadodara,Gotri,5000,2024-04-01
+Gujarat,Vadodara,Fatehgunj,4500,2024-04-01
+Gujarat,Rajkot,Kalawad Road,4000,2024-04-01
+Gujarat,Rajkot,University Road,4500,2024-04-01
+Gujarat,Gandhinagar,Sector 23,5500,2024-04-01
+Gujarat,Gandhinagar,Infocity,6000,2024-04-01
+Gujarat,Bhavnagar,Waghawadi Road,3500,2024-04-01
+Gujarat,Jamnagar,Digvijay Plot,4000,2024-04-01
+Gujarat,Anand,Vallabh Vidhyanagar,3500,2024-04-01
+Rajasthan,Jaipur,Malviya Nagar,5000,2024-04-01
+Rajasthan,Jaipur,Vaishali Nagar,4500,2024-04-01
+Rajasthan,Jaipur,Mansarovar,5000,2024-04-01
+Rajasthan,Jaipur,C Scheme,6500,2024-04-01
+Rajasthan,Jaipur,Jagatpura,4000,2024-04-01
+Rajasthan,Jodhpur,Paota,4000,2024-04-01
+Rajasthan,Jodhpur,Ratanada,4500,2024-04-01
+Rajasthan,Udaipur,Hiran Magri,4500,2024-04-01
+Rajasthan,Udaipur,Sukhadia Circle,5000,2024-04-01
+Rajasthan,Kota,Talwandi,3500,2024-04-01
+Rajasthan,Ajmer,Vaishali Nagar Ajmer,3200,2024-04-01
+Rajasthan,Bikaner,Lalgarh,2800,2024-04-01
+Rajasthan,Alwar,Bhiwadi,4500,2024-04-01
+Punjab,Ludhiana,Model Town,5000,2024-04-01
+Punjab,Ludhiana,BRS Nagar,4500,2024-04-01
+Punjab,Ludhiana,Pakhowal Road,4000,2024-04-01
+Punjab,Amritsar,Ranjit Avenue,4500,2024-04-01
+Punjab,Amritsar,Green Avenue,4000,2024-04-01
+Punjab,Jalandhar,Model Town Jalandhar,4000,2024-04-01
+Punjab,Jalandhar,Lajpat Nagar Jalandhar,3800,2024-04-01
+Punjab,Patiala,Model Town Patiala,3500,2024-04-01
+Punjab,Mohali,Phase 7,6000,2024-04-01
+Punjab,Mohali,Aerocity,6500,2024-04-01
+Chandigarh,Chandigarh,Sector 17,9000,2024-04-01
+Chandigarh,Chandigarh,Sector 35,8000,2024-04-01
+Chandigarh,Chandigarh,Sector 22,8500,2024-04-01
+Chandigarh,Chandigarh,Manimajra,5000,2024-04-01
+West Bengal,Kolkata,Salt Lake,7000,2024-04-01
+West Bengal,Kolkata,New Town,6500,2024-04-01
+West Bengal,Kolkata,Rajarhat,5500,2024-04-01
+West Bengal,Kolkata,Ballygunge,10000,2024-04-01
+West Bengal,Kolkata,Park Street,12000,2024-04-01
+West Bengal,Kolkata,Behala,5000,2024-04-01
+West Bengal,Kolkata,Dum Dum,5500,2024-04-01
+West Bengal,Howrah,Shibpur,5500,2024-04-01
+West Bengal,Howrah,Liluah,4500,2024-04-01
+West Bengal,Siliguri,Sevoke Road,3800,2024-04-01
+West Bengal,Durgapur,Benachity,3200,2024-04-01
+West Bengal,Asansol,Burnpur Road,2800,2024-04-01
+Madhya Pradesh,Indore,Vijay Nagar,5500,2024-04-01
+Madhya Pradesh,Indore,Scheme 78,5000,2024-04-01
+Madhya Pradesh,Indore,LIG Colony,4500,2024-04-01
+Madhya Pradesh,Bhopal,Arera Colony,5000,2024-04-01
+Madhya Pradesh,Bhopal,MP Nagar,5500,2024-04-01
+Madhya Pradesh,Bhopal,Kolar Road,4500,2024-04-01
+Madhya Pradesh,Jabalpur,Napier Town,4000,2024-04-01
+Madhya Pradesh,Jabalpur,Civil Lines Jabalpur,4500,2024-04-01
+Madhya Pradesh,Gwalior,City Centre,4000,2024-04-01
+Madhya Pradesh,Gwalior,Lashkar,3500,2024-04-01
+Madhya Pradesh,Ujjain,Freeganj,3000,2024-04-01
+Madhya Pradesh,Rewa,Civil Lines Rewa,2500,2024-04-01
+Bihar,Patna,Boring Road,5000,2024-04-01
+Bihar,Patna,Bailey Road,5500,2024-04-01
+Bihar,Patna,Kankarbagh,4500,2024-04-01
+Bihar,Patna,Rajendra Nagar,5000,2024-04-01
+Bihar,Patna,Danapur,4000,2024-04-01
+Bihar,Gaya,Civil Lines Gaya,2800,2024-04-01
+Bihar,Muzaffarpur,Mithanpura,2800,2024-04-01
+Bihar,Bhagalpur,Adampur,2800,2024-04-01
+Bihar,Darbhanga,Laheriasarai,2500,2024-04-01
+Jharkhand,Ranchi,Harmu Housing Colony,4500,2024-04-01
+Jharkhand,Ranchi,Lalpur,4000,2024-04-01
+Jharkhand,Dhanbad,Bank More,3200,2024-04-01
+Jharkhand,Jamshedpur,Bistupur,4000,2024-04-01
+Jharkhand,Jamshedpur,Adityapur,3500,2024-04-01
+Odisha,Bhubaneswar,Patia,5000,2024-04-01
+Odisha,Bhubaneswar,Acharya Vihar,4500,2024-04-01
+Odisha,Bhubaneswar,Nayapalli,5500,2024-04-01
+Odisha,Bhubaneswar,Saheed Nagar,4800,2024-04-01
+Odisha,Cuttack,Badambadi,3800,2024-04-01
+Odisha,Cuttack,Ranihat,3500,2024-04-01
+Odisha,Rourkela,Sector 19,3200,2024-04-01
+Odisha,Sambalpur,Ainthapali,2800,2024-04-01
+Kerala,Thiruvananthapuram,Pattom,5800,2024-04-01
+Kerala,Thiruvananthapuram,Kesavadasapuram,5500,2024-04-01
+Kerala,Thiruvananthapuram,Vazhuthacaud,6000,2024-04-01
+Kerala,Kochi,Edapally,7500,2024-04-01
+Kerala,Kochi,Kakkanad,6500,2024-04-01
+Kerala,Kochi,Marine Drive,10000,2024-04-01
+Kerala,Kochi,Vyttila,7000,2024-04-01
+Kerala,Kozhikode,Calicut Beach,5500,2024-04-01
+Kerala,Kozhikode,Mavoor Road,5000,2024-04-01
+Kerala,Thrissur,Poothole,4500,2024-04-01
+Kerala,Thrissur,Ollur,4000,2024-04-01
+Kerala,Kollam,Kadappakada,3800,2024-04-01
+Kerala,Malappuram,Tirur,3500,2024-04-01
+Kerala,Kannur,Thana,4000,2024-04-01
+Assam,Kamrup,Guwahati Zoo Road,4000,2024-04-01
+Assam,Kamrup,GS Road,4500,2024-04-01
+Assam,Kamrup,Kahilipara,3800,2024-04-01
+Assam,Dibrugarh,AT Road,2800,2024-04-01
+Assam,Silchar,Tarapur,2200,2024-04-01
+Uttarakhand,Dehradun,Rajpur Road,5500,2024-04-01
+Uttarakhand,Dehradun,Race Course,6000,2024-04-01
+Uttarakhand,Dehradun,GMS Road,5000,2024-04-01
+Uttarakhand,Haridwar,Jwalapur,4000,2024-04-01
+Uttarakhand,Haridwar,Ranipur More,3800,2024-04-01
+Uttarakhand,Nainital,Mallital,5000,2024-04-01
+Himachal Pradesh,Shimla,Sanjauli,4500,2024-04-01
+Himachal Pradesh,Shimla,New Shimla,4000,2024-04-01
+Himachal Pradesh,Kangra,Dharamshala,4000,2024-04-01
+Himachal Pradesh,Mandi,Indira Market,3000,2024-04-01
+Goa,North Goa,Panaji,9000,2024-04-01
+Goa,North Goa,Porvorim,7500,2024-04-01
+Goa,North Goa,Mapusa,6000,2024-04-01
+Goa,South Goa,Margao,6500,2024-04-01
+Goa,South Goa,Vasco,5500,2024-04-01
+Chhattisgarh,Raipur,Shankar Nagar,3500,2024-04-01
+Chhattisgarh,Raipur,Pandri,3800,2024-04-01
+Chhattisgarh,Bilaspur,Vyapar Vihar,2800,2024-04-01
+Chhattisgarh,Durg,Supela,2800,2024-04-01
+Jammu and Kashmir,Jammu,Gandhi Nagar,4500,2024-04-01
+Jammu and Kashmir,Jammu,Trikuta Nagar,5000,2024-04-01
+Jammu and Kashmir,Srinagar,Jawahar Nagar,4500,2024-04-01
+Jammu and Kashmir,Srinagar,Rajbagh,5000,2024-04-01
+Tripura,West Tripura,Agartala,2500,2024-04-01
+Meghalaya,East Khasi Hills,Shillong,3500,2024-04-01
+Manipur,Imphal West,Imphal,2500,2024-04-01
+Nagaland,Kohima,Kohima Town,3000,2024-04-01
+Mizoram,Aizawl,Dawrpui,3000,2024-04-01
+Sikkim,East Sikkim,Gangtok,4000,2024-04-01
+Arunachal Pradesh,Papum Pare,Itanagar,3000,2024-04-01
+Puducherry,Puducherry,White Town,5500,2024-04-01
+Puducherry,Puducherry,Kamaraj Nagar,4500,2024-04-01
+Andaman and Nicobar,South Andaman,Port Blair,4500,2024-04-01
+Lakshadweep,Lakshadweep,Kavaratti,3500,2024-04-01

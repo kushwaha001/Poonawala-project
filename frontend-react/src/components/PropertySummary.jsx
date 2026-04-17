@@ -12,13 +12,13 @@ export default function PropertySummary({ input }) {
   ].filter(Boolean)
 
   return (
-    <div className="glass rounded-2xl px-5 py-3.5 flex items-center gap-2.5 flex-wrap animate-fadeInUp mb-5">
-      <span className="grad-teal text-[0.65rem] uppercase tracking-[0.16em] font-bold mr-1">Subject Property</span>
-      <div className="h-4 w-px" style={{ background: 'var(--border-h)' }} />
+    <div className="glass rounded-2xl px-5 py-3 flex items-center gap-2 flex-wrap animate-fadeInUp mb-5">
+      <span className="text-[0.62rem] text-slate-600 uppercase tracking-widest font-semibold mr-2">Subject Property</span>
+      <div className="h-4 w-px bg-[#1a2035]" />
       {pills.map((p, i) => (
-        <div key={i} className="flex items-center gap-1.5 rounded-lg px-3 py-1.5" style={{ background: 'rgba(0,255,204,0.04)', border: '1px solid rgba(0,255,204,0.12)' }}>
-          <p.icon size={12} className="text-teal-500" />
-          <span className="text-[0.78rem] font-medium capitalize" style={{ color: 'var(--text2)' }}>{p.text}</span>
+        <div key={i} className="flex items-center gap-1.5 bg-[#0a0e17] border border-[#1a2035] rounded-lg px-2.5 py-1">
+          <p.icon size={11} className="text-slate-600" />
+          <span className="text-[0.72rem] text-slate-300 capitalize">{p.text}</span>
         </div>
       ))}
     </div>

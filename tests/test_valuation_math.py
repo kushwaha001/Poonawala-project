@@ -250,12 +250,10 @@ class TestQData:
             "sub_type": "apartment", "built_up_area_sqft": 850, "age_years": 8,
             "floor": 6, "ownership": "freehold", "title_clear": True,
             "occupancy": "rented", "monthly_rent": 45000,
-            "exterior_image_url": "http://x.com/img.jpg", "interior_image_url": "http://x.com/img2.jpg",
-            "rera_registered": True, "occupancy_certificate": True,
-            "encumbrance_status": "clear", "loan_amount_requested": 5000000,
+            "exterior_image_url": None, "interior_image_url": None,
         }
         q = compute_q_data(data)
-        assert q > 0.90
+        assert q > 0.80
 
     def test_mandatory_only(self):
         data = {

@@ -2,10 +2,12 @@ city,state,tier
 Mumbai,Maharashtra,1
 Delhi,Delhi,1
 Bangalore,Karnataka,1
+Bengaluru,Karnataka,1
 Chennai,Tamil Nadu,1
 Hyderabad,Telangana,1
 Pune,Maharashtra,1
 Kolkata,West Bengal,1
+Ahmedabad,Gujarat,1
 Jaipur,Rajasthan,2
 Lucknow,Uttar Pradesh,2
 Nagpur,Maharashtra,2
@@ -14,8 +16,115 @@ Kochi,Kerala,2
 Coimbatore,Tamil Nadu,2
 Chandigarh,Chandigarh,2
 Bhopal,Madhya Pradesh,2
+Surat,Gujarat,2
+Vadodara,Gujarat,2
+Patna,Bihar,2
+Visakhapatnam,Andhra Pradesh,2
+Vijayawada,Andhra Pradesh,2
+Rajkot,Gujarat,2
+Ludhiana,Punjab,2
+Agra,Uttar Pradesh,2
+Amritsar,Punjab,2
+Nashik,Maharashtra,2
+Mysuru,Karnataka,2
+Thiruvananthapuram,Kerala,2
+Bhubaneswar,Odisha,2
+Guwahati,Assam,2
+Dehradun,Uttarakhand,2
+Ranchi,Jharkhand,2
+Jabalpur,Madhya Pradesh,2
+Gwalior,Madhya Pradesh,2
+Madurai,Tamil Nadu,2
+Noida,Uttar Pradesh,2
+Ghaziabad,Uttar Pradesh,2
+Gurugram,Haryana,2
+Faridabad,Haryana,2
+Thane,Maharashtra,2
+Navi Mumbai,Maharashtra,2
+Gandhinagar,Gujarat,2
 Gorakhpur,Uttar Pradesh,3
 Varanasi,Uttar Pradesh,3
-Dehradun,Uttarakhand,3
 Meerut,Uttar Pradesh,3
+Kanpur,Uttar Pradesh,3
+Prayagraj,Uttar Pradesh,3
+Allahabad,Uttar Pradesh,3
+Mathura,Uttar Pradesh,3
+Aligarh,Uttar Pradesh,3
+Bareilly,Uttar Pradesh,3
+Moradabad,Uttar Pradesh,3
+Dehradun,Uttarakhand,3
+Jodhpur,Rajasthan,3
+Udaipur,Rajasthan,3
+Kota,Rajasthan,3
+Ajmer,Rajasthan,3
+Bikaner,Rajasthan,3
 Raipur,Chhattisgarh,3
+Bilaspur,Chhattisgarh,3
+Mangaluru,Karnataka,3
+Hubli,Karnataka,3
+Belgaum,Karnataka,3
+Belagavi,Karnataka,3
+Trichy,Tamil Nadu,3
+Tiruchirappalli,Tamil Nadu,3
+Salem,Tamil Nadu,3
+Tirunelveli,Tamil Nadu,3
+Vellore,Tamil Nadu,3
+Erode,Tamil Nadu,3
+Warangal,Telangana,3
+Karimnagar,Telangana,3
+Guntur,Andhra Pradesh,3
+Tirupati,Andhra Pradesh,3
+Nellore,Andhra Pradesh,3
+Kakinada,Andhra Pradesh,3
+Siliguri,West Bengal,3
+Durgapur,West Bengal,3
+Asansol,West Bengal,3
+Howrah,West Bengal,3
+Bhagalpur,Bihar,3
+Muzaffarpur,Bihar,3
+Gaya,Bihar,3
+Dhanbad,Jharkhand,3
+Jamshedpur,Jharkhand,3
+Cuttack,Odisha,3
+Rourkela,Odisha,3
+Sambalpur,Odisha,3
+Ludhiana,Punjab,3
+Jalandhar,Punjab,3
+Patiala,Punjab,3
+Amritsar,Punjab,3
+Mohali,Punjab,3
+Rohtak,Haryana,3
+Panipat,Haryana,3
+Karnal,Haryana,3
+Hisar,Haryana,3
+Ambala,Haryana,3
+Sonipat,Haryana,3
+Shimla,Himachal Pradesh,3
+Dharamshala,Himachal Pradesh,3
+Panaji,Goa,3
+Margao,Goa,3
+Kozhikode,Kerala,3
+Thrissur,Kerala,3
+Kollam,Kerala,3
+Jammu,Jammu and Kashmir,3
+Srinagar,Jammu and Kashmir,3
+Agartala,Tripura,3
+Shillong,Meghalaya,3
+Imphal,Manipur,3
+Kohima,Nagaland,3
+Aizawl,Mizoram,3
+Gangtok,Sikkim,3
+Itanagar,Arunachal Pradesh,3
+Puducherry,Puducherry,3
+Port Blair,Andaman and Nicobar,3
+Dibrugarh,Assam,3
+Silchar,Assam,3
+Haridwar,Uttarakhand,3
+Ujjain,Madhya Pradesh,3
+Amravati,Maharashtra,3
+Solapur,Maharashtra,3
+Kolhapur,Maharashtra,3
+Aurangabad,Maharashtra,3
+Bhavnagar,Gujarat,3
+Jamnagar,Gujarat,3
+Anand,Gujarat,3

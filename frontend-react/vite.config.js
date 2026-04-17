@@ -8,6 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/valuate': 'http://localhost:8000',
+      '/chat': 'http://localhost:8000',
       '/health': 'http://localhost:8000',
     },
   },

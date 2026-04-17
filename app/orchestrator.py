@@ -44,14 +44,8 @@ SAFE_MARKET = {
     "supply_pipeline_risk": "moderate", "market_trend_analysis": {},
 }
 
-SAFE_LEGAL = {
-    "f_legal": 0.95, "f_regulatory": 1.0, "legal_multiplier": 0.95,
-    "s_legal": 0.85, "ownership": "unknown", "title_status": "unknown",
-    "legal_risk_category": "amber", "encumbrance_status": "unknown",
-    "rera_registered": None, "occupancy_certificate": None,
-    "completion_certificate": None, "litigation_pending": None,
-    "plan_deviation_pct": None, "warnings": [],
-}
+SAFE_LEGAL = {"f_legal": 0.95, "s_legal": 0.85, "ownership": "unknown",
+              "title_status": "unknown", "legal_multiplier": 0.95, "warnings": []}
 
 SAFE_MACRO = {"macro_adjustment_factor": 1.0, "seasonal_factor": 1.0,
               "is_llm_powered": False, "interest_rate_environment": "moderate",
@@ -60,9 +54,6 @@ SAFE_MACRO = {"macro_adjustment_factor": 1.0, "seasonal_factor": 1.0,
               "market_sentiment": "stable", "macro_risks": [], "macro_tailwinds": []}
 
 SAFE_COMPARABLE = {"v2_comparable_estimate": None, "confidence": 0, "is_llm_powered": False}
-SAFE_FRAUD = {"flags": [], "rule_based_flags": [], "llm_detected_flags": [],
-              "fraud_score": 0, "is_llm_powered": False, "checks_performed": [],
-              "overall_risk": "unknown", "llm_recommendation": "proceed"}
 
 
 def _safe_result(result, default):
@@ -78,15 +69,15 @@ async def run_pipeline(input_data: dict) -> dict:
     ctx = {"input": input_data}
     start = time.time()
 
-    # ── Stage 1: Input normalization ─────────────────────────────────
+    # Step 1: Input normalization
     normalizer = InputNormalizerAgent()
     try:
         ctx[normalizer.name] = await normalizer.run(ctx)
-    except Exception:
+    except Exception as e:
         ctx[normalizer.name] = {"lat": None, "lon": None, "address": input_data.get("address", ""),
                                  "missing_fields": ["geocoding_failed"], "status": "degraded"}
 
-    # ── Stage 2: Location intel + Legal (parallel) ───────────────────
+    # Step 2: Location + Legal in parallel
     loc_result, legal_result = await asyncio.gather(
         LocationIntelAgent().run(ctx),
         LegalAgent().run(ctx),
@@ -95,42 +86,43 @@ async def run_pipeline(input_data: dict) -> dict:
     ctx["location_intel"] = _safe_result(loc_result, SAFE_LOCATION)
     ctx["legal"] = _safe_result(legal_result, SAFE_LEGAL)
 
-    # ── Stage 3: All agents that only need location_intel (parallel) ─
-    # ComparableAnalysis moved here — it only needs location_intel,
-    # not property_char or market_dynamics, so it can run immediately.
-    (prop_result, market_result, macro_result,
-     comparable_result) = await asyncio.gather(
+    # Step 3: PropertyChar + MarketDynamics + MacroContext in parallel
+    prop_result, market_result, macro_result = await asyncio.gather(
         PropertyCharAgent().run(ctx),
         MarketDynamicsAgent().run(ctx),
         MacroContextAgent().run(ctx),
-        ComparableAnalysisAgent().run(ctx),
         return_exceptions=True,
     )
     ctx["property_char"] = _safe_result(prop_result, SAFE_PROPERTY)
     ctx["market_dynamics"] = _safe_result(market_result, SAFE_MARKET)
     ctx["macro_context"] = _safe_result(macro_result, SAFE_MACRO)
-    ctx["comparable_analysis"] = _safe_result(comparable_result, SAFE_COMPARABLE)
 
-    # ── Stage 4: Valuation + Fraud detection (parallel) ─────────────
-    # Valuation is pure math (needs stage 3 outputs, not fraud).
-    # Fraud needs stage 3 outputs but not valuation — run them together.
-    val_result, fraud_result = await asyncio.gather(
-        ValuationAgent().run(ctx),
-        FraudAgent().run(ctx),
-        return_exceptions=True,
-    )
-    if isinstance(val_result, Exception):
-        raise ValueError(f"Valuation failed: {val_result}")
-    ctx["valuation"] = val_result
-    ctx["fraud"] = _safe_result(fraud_result, SAFE_FRAUD)
+    # Step 4: Comparable analysis
+    try:
+        ctx["comparable_analysis"] = await ComparableAnalysisAgent().run(ctx)
+    except Exception as e:
+        ctx["comparable_analysis"] = {**SAFE_COMPARABLE, "status": "error", "reason": str(e)}
 
-    # ── Stage 5: Liquidity (needs valuation) ────────────────────────
+    # Step 5: Valuation
+    try:
+        ctx["valuation"] = await ValuationAgent().run(ctx)
+    except Exception as e:
+        raise ValueError(f"Valuation failed: {e}")
+
+    # Step 6: Liquidity
     try:
         ctx["liquidity"] = await LiquidityAgent().run(ctx)
     except Exception as e:
         raise ValueError(f"Liquidity failed: {e}")
 
-    # ── Stage 6: Synthesis (needs everything) ───────────────────────
+    # Step 7: Fraud detection
+    try:
+        ctx["fraud"] = await FraudAgent().run(ctx)
+    except Exception as e:
+        ctx["fraud"] = {"flags": [], "fraud_score": 0, "is_llm_powered": False,
+                        "checks_performed": [], "overall_risk": "unknown"}
+
+    # Step 8: Synthesis
     try:
         result = await SynthesizerAgent().run(ctx)
     except Exception as e:
@@ -139,6 +131,6 @@ async def run_pipeline(input_data: dict) -> dict:
     result["_meta"] = {
         "pipeline_time_seconds": round(time.time() - start, 3),
         "agents_executed": 11,
-        "dag_version": "v3_optimized",
+        "dag_version": "v2_robust",
     }
     return result
