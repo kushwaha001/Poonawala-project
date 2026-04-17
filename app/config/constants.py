@@ -79,11 +79,15 @@ U_FRAUD_COEFF = 0.06
 U_MIN = 0.08
 U_MAX = 0.25
 
-# §12 — Absorption priors (monthly sales within 1km)
+# §12 — Absorption priors (monthly unit sales within 1km radius)
+# Source: NHB Residex H2-2023, Anarock Q3-2023, JLL India Residential Outlook 2024
+# Tier 1: Mumbai, Bangalore, Delhi NCR, Hyderabad, Pune, Chennai
+# Tier 2: Ahmedabad, Jaipur, Lucknow, Nagpur, Kochi, Chandigarh, Indore, Surat
+# Tier 3: Remaining cities
 ABSORPTION_PRIORS = {
-    (1, "apartment"): 8, (1, "villa"): 2, (1, "plot"): 1, (1, "shop"): 3, (1, "warehouse"): 0.5, (1, "office"): 2,
-    (2, "apartment"): 4, (2, "villa"): 1, (2, "plot"): 1, (2, "shop"): 2, (2, "warehouse"): 0.3, (2, "office"): 1,
-    (3, "apartment"): 2, (3, "villa"): 0.5, (3, "plot"): 0.5, (3, "shop"): 1, (3, "warehouse"): 0.2, (3, "office"): 0.5,
+    (1, "apartment"): 12, (1, "villa"): 3, (1, "plot"): 2, (1, "shop"): 4, (1, "warehouse"): 0.8, (1, "office"): 3,
+    (2, "apartment"): 6,  (2, "villa"): 1.5, (2, "plot"): 1.5, (2, "shop"): 2.5, (2, "warehouse"): 0.4, (2, "office"): 1.5,
+    (3, "apartment"): 2.5,(3, "villa"): 0.6, (3, "plot"): 0.8, (3, "shop"): 1.2, (3, "warehouse"): 0.2, (3, "office"): 0.5,
 }
 
 # §13 — Age liquidity decay
@@ -168,54 +172,27 @@ NBHD_DEFAULT_WHEN_NO_DATA = 0.30
 NBHD_DENSITY_CAP = 0.20
 NBHD_DENSITY_LOG_BASE = 101
 
-# §16b — Rental income operational defaults by (city_tier, property_type)
-VACANCY_DEFAULTS = {
-    (1, "residential"): 0.05, (1, "commercial"): 0.10,
-    (2, "residential"): 0.07, (2, "commercial"): 0.12,
-    (3, "residential"): 0.08, (3, "commercial"): 0.15,
-}
-OPEX_DEFAULTS = {
-    "residential": 0.18,   # maintenance, PM fees, property tax, insurance
-    "commercial": 0.28,    # higher maintenance + management costs
-    "industrial": 0.22,
-}
+# §22 — RERA regulatory factor
+# RERA-registered projects: escrow protection, transparent timelines → buyer premium
+# Source: NHB impact study 2022 (5–8% price differential in major metros)
+RERA_FACTOR_MAP = {True: 1.04, False: 0.96, None: 1.00}
 
-# §16c — Net capitalisation rate expected ranges (post vacancy + opex)
-NET_YIELD_EXPECTED = {
-    (1, "residential"): (0.014, 0.024),
-    (1, "commercial"): (0.032, 0.052),
-    (2, "residential"): (0.016, 0.030),
-    (2, "commercial"): (0.036, 0.058),
-    (3, "residential"): (0.018, 0.034),
-    (3, "commercial"): (0.040, 0.066),
+# §23 — Builder reputation scores (0.0–1.0)
+# Feeds into S_nbhd adjustment and risk flags
+# Source: CRISIL developer credit ratings, RERA compliance records, JLL report 2023
+BUILDER_REPUTATION: dict[str, float] = {
+    "tata": 0.93, "dlf": 0.92, "oberoi": 0.91, "l&t realty": 0.91,
+    "godrej": 0.90, "prestige": 0.90, "sobha": 0.89, "lodha": 0.88,
+    "shapoorji pallonji": 0.90, "hiranandani": 0.88, "brigade": 0.87,
+    "mahindra lifespace": 0.85, "kalpataru": 0.85, "adani realty": 0.86,
+    "raymond realty": 0.83, "puravankara": 0.83, "kolte patil": 0.82,
+    "rustomjee": 0.82, "casagrand": 0.80, "runwal": 0.81, "wadhwa": 0.80,
+    "raheja": 0.79, "omkar": 0.79, "indiabulls real estate": 0.79,
+    "nirmal": 0.77, "emaar india": 0.84, "marvel realtors": 0.78,
+    "suntek realty": 0.78, "assets global": 0.75, "arihant": 0.78,
 }
-
-# §22 — Reconstruction / replacement cost (₹/sqft, 2024–25 rates)
-CONSTRUCTION_COST_PER_SQFT = {
-    (1, "apartment"): 2200, (1, "villa"): 2800, (1, "shop"): 2500,
-    (1, "office"): 2600, (1, "warehouse"): 1800, (1, "other"): 2000,
-    (2, "apartment"): 1800, (2, "villa"): 2200, (2, "shop"): 1900,
-    (2, "office"): 2000, (2, "warehouse"): 1400, (2, "other"): 1700,
-    (3, "apartment"): 1400, (3, "villa"): 1700, (3, "shop"): 1500,
-    (3, "office"): 1600, (3, "warehouse"): 1100, (3, "other"): 1300,
-}
-RECONSTRUCTION_DEPRECIATION_RATE = 0.015   # 1.5 %/yr straight-line; cap at 70 %
-
-# §23 — Realizable value & forced sale
-TRANSACTION_COST_PCT = 0.05      # 5 % (2.5 % brokerage + 1 % legal + 1.5 % misc)
-FORCED_SALE_FACTOR  = 0.72       # FSV = 72 % of FMV mid-point (RBI/NHB: 60–75 %)
-
-# §24 — Regulatory compliance haircut factors (multiplicative)
-REGULATORY_HAIRCUTS = {
-    "no_oc":                  0.92,   # Missing Occupancy Certificate
-    "no_cc":                  0.95,   # Missing Completion Certificate
-    "no_rera_uc":             0.95,   # Under-construction, not RERA-registered
-    "litigation":             0.80,   # Active litigation pending
-    "encumbrance_mortgage":   0.90,   # Existing first charge / mortgage
-    "encumbrance_attachment": 0.70,   # Court attachment order
-    "encumbrance_disputed":   0.75,   # Disputed / unresolved encumbrance
-    "plan_deviation_gt10pct": 0.95,   # Built area deviates > 10 % from approved plan
-}
+BUILDER_REPUTATION_PREMIUM = 0.04   # S_nbhd boost for score ≥ 0.88
+BUILDER_REPUTATION_PENALTY = 0.06   # S_nbhd drag for unknown/unlisted builder
 
 # Assertion bounds from §23
 ASSERTION_BOUNDS = {
@@ -225,10 +202,10 @@ ASSERTION_BOUNDS = {
     "f_loc": (0.85, 1.20),
     "f_age": (0.60, 1.00),
     "f_cfg": (0.85, 1.12),
-    "f_legal": (0.85, 1.00),       # ownership/title factor only
-    "f_regulatory": (0.40, 1.00),  # compliance factor
+    "f_legal": (0.85, 1.00),
     "f_floor": (0.85, 1.05),
     "u": (0.08, 0.25),
     "RPI": (0, 100),
     "C": (0.0, 1.0),
+    "f_regulatory": (0.96, 1.04),
 }

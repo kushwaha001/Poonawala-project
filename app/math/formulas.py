@@ -11,9 +11,7 @@ from app.config.constants import (
     T_BASE_DAYS, HAZARD_EXPONENT, LOG_SPREAD, DISTRESS_BASE, DISTRESS_SLOPE,
     CONFIDENCE_WEIGHTS, AGREEMENT_COEFFICIENT, FRAUD_SEVERITY_WEIGHTS,
     NBHD_DEFAULT_WHEN_NO_DATA, NBHD_DENSITY_CAP, NBHD_DENSITY_LOG_BASE,
-    VACANCY_DEFAULTS, OPEX_DEFAULTS, NET_YIELD_EXPECTED,
-    CONSTRUCTION_COST_PER_SQFT, RECONSTRUCTION_DEPRECIATION_RATE,
-    TRANSACTION_COST_PCT, FORCED_SALE_FACTOR, REGULATORY_HAIRCUTS,
+    RERA_FACTOR_MAP,
 )
 
 
@@ -131,17 +129,24 @@ def compute_f_floor(floor: int | None, total_floors: int | None,
         return F_FLOOR_MAP["very_high_no_lift"]
 
 
+# §10a — RERA Regulatory Factor
+def compute_f_regulatory(rera_registered: bool | None) -> float:
+    return RERA_FACTOR_MAP.get(rera_registered, 1.00)
+
+
 # §10 — Master Valuation
 def compute_valuation(circle_rate: float, area: float, mcr: float,
                       f_loc: float, f_age: float, f_cfg: float,
-                      f_legal: float, f_floor: float) -> float:
-    return circle_rate * area * mcr * f_loc * f_age * f_cfg * f_legal * f_floor
+                      f_legal: float, f_floor: float,
+                      f_regulatory: float = 1.00) -> float:
+    return circle_rate * area * mcr * f_loc * f_age * f_cfg * f_legal * f_floor * f_regulatory
 
 
 # §10 — Driver contributions
 def compute_driver_contributions(mcr: float, f_loc: float, f_age: float,
                                   f_cfg: float, f_legal: float,
-                                  f_floor: float, f_regulatory: float = 1.0) -> list[dict]:
+                                  f_floor: float,
+                                  f_regulatory: float = 1.00) -> list[dict]:
     drivers = [
         {"factor": "market_to_circle_ratio", "value": mcr, "impact_pct": round((mcr - 1.0) * 100, 1), "source_agent": "location_intel"},
         {"factor": "micro_location_adjustment", "value": f_loc, "impact_pct": round((f_loc - 1.0) * 100, 1), "source_agent": "location_intel"},
@@ -149,10 +154,8 @@ def compute_driver_contributions(mcr: float, f_loc: float, f_age: float,
         {"factor": "config_factor", "value": f_cfg, "impact_pct": round((f_cfg - 1.0) * 100, 1), "source_agent": "property_char"},
         {"factor": "legal_factor", "value": f_legal, "impact_pct": round((f_legal - 1.0) * 100, 1), "source_agent": "legal"},
         {"factor": "floor_factor", "value": f_floor, "impact_pct": round((f_floor - 1.0) * 100, 1), "source_agent": "property_char"},
+        {"factor": "rera_regulatory_factor", "value": f_regulatory, "impact_pct": round((f_regulatory - 1.0) * 100, 1), "source_agent": "legal"},
     ]
-    if abs(f_regulatory - 1.0) > 0.001:
-        drivers.append({"factor": "regulatory_compliance", "value": f_regulatory,
-                        "impact_pct": round((f_regulatory - 1.0) * 100, 1), "source_agent": "legal"})
     return sorted(drivers, key=lambda d: abs(d["impact_pct"]), reverse=True)
 
 
@@ -242,140 +245,11 @@ def compute_distress_range(mv_range: list[int], rpi: float) -> list[int]:
     return [d_low, d_high]
 
 
-# ─── §16b-16c : Rental Income Math ────────────────────────────────────
-
-def compute_noi(monthly_rent: float, vacancy_rate: float, opex_ratio: float) -> float:
-    """Net Operating Income = gross annual rent × (1 − vacancy) × (1 − opex)."""
-    if not monthly_rent or monthly_rent <= 0:
-        return 0.0
-    return monthly_rent * 12 * (1 - vacancy_rate) * (1 - opex_ratio)
-
-
-def compute_gross_yield(monthly_rent: float, property_value: float) -> float:
-    if not monthly_rent or property_value <= 0:
-        return 0.0
-    return (monthly_rent * 12) / property_value
-
-
-def compute_net_yield(noi: float, property_value: float) -> float:
-    if property_value <= 0:
-        return 0.0
-    return noi / property_value
-
-
-def compute_monthly_emi(loan_amount: float,
-                        annual_rate: float = 0.10,
-                        tenure_years: int = 20) -> float:
-    """Standard reducing-balance EMI formula."""
-    r = annual_rate / 12
-    n = tenure_years * 12
-    if r == 0 or loan_amount <= 0:
-        return loan_amount / n if n > 0 else 0.0
-    return loan_amount * r * (1 + r) ** n / ((1 + r) ** n - 1)
-
-
-def compute_dscr(noi: float, loan_amount: float,
-                 annual_rate: float = 0.10,
-                 tenure_years: int = 20) -> float | None:
-    """Debt Service Coverage Ratio = NOI / annual debt service."""
-    if not loan_amount or loan_amount <= 0 or noi <= 0:
-        return None
-    annual_ds = compute_monthly_emi(loan_amount, annual_rate, tenure_years) * 12
-    return noi / annual_ds if annual_ds > 0 else None
-
-
-def compute_grm(property_value: float, monthly_rent: float) -> float | None:
-    """Gross Rent Multiplier = property value / annual gross rent."""
-    if not monthly_rent or monthly_rent <= 0:
-        return None
-    return property_value / (monthly_rent * 12)
-
-
-def compute_rent_coverage_ratio(monthly_rent: float, loan_amount: float,
-                                 annual_rate: float = 0.10,
-                                 tenure_years: int = 20) -> float | None:
-    """RCR = monthly rent / monthly EMI."""
-    if not loan_amount or loan_amount <= 0 or not monthly_rent or monthly_rent <= 0:
-        return None
-    emi = compute_monthly_emi(loan_amount, annual_rate, tenure_years)
-    return monthly_rent / emi if emi > 0 else None
-
-
-# ─── §22 : Reconstruction Value ────────────────────────────────────────
-
-def compute_reconstruction_value(area: float, age_years: int,
-                                  city_tier: int, sub_type: str) -> int:
-    """Insurance replacement value = current construction cost × depreciation factor."""
-    cost_psf = (CONSTRUCTION_COST_PER_SQFT.get((city_tier, sub_type))
-                or CONSTRUCTION_COST_PER_SQFT.get((2, sub_type), 1800))
-    depreciation = min(0.70, RECONSTRUCTION_DEPRECIATION_RATE * age_years)
-    return round(area * cost_psf * (1 - depreciation))
-
-
-# ─── §23 : Realizable & Forced Sale ────────────────────────────────────
-
-def compute_forced_sale_value(mv_midpoint: float) -> int:
-    return round(mv_midpoint * FORCED_SALE_FACTOR)
-
-
-def compute_realizable_value(mv_midpoint: float) -> int:
-    return round(mv_midpoint * (1 - TRANSACTION_COST_PCT))
-
-
-# ─── §24 : Regulatory Compliance Factor ────────────────────────────────
-
-def compute_f_regulatory(rera_registered: bool | None,
-                          occupancy_certificate: bool | None,
-                          completion_certificate: bool | None,
-                          litigation_pending: bool | None,
-                          encumbrance_status: str | None,
-                          approved_plan_area_sqft: float | None,
-                          built_up_area: float,
-                          age_years: int) -> float:
-    """Multiplicative haircut for Indian regulatory compliance issues."""
-    f = 1.0
-
-    # RERA: under-construction only (age < 3 yrs)
-    if rera_registered is False and age_years < 3:
-        f *= REGULATORY_HAIRCUTS["no_rera_uc"]
-
-    # Occupancy Certificate (completed buildings)
-    if occupancy_certificate is False and age_years >= 1:
-        f *= REGULATORY_HAIRCUTS["no_oc"]
-
-    # Completion Certificate
-    if completion_certificate is False:
-        f *= REGULATORY_HAIRCUTS["no_cc"]
-
-    # Active litigation
-    if litigation_pending is True:
-        f *= REGULATORY_HAIRCUTS["litigation"]
-
-    # Encumbrance status
-    if encumbrance_status == "existing_mortgage":
-        f *= REGULATORY_HAIRCUTS["encumbrance_mortgage"]
-    elif encumbrance_status == "attachment_order":
-        f *= REGULATORY_HAIRCUTS["encumbrance_attachment"]
-    elif encumbrance_status == "disputed":
-        f *= REGULATORY_HAIRCUTS["encumbrance_disputed"]
-
-    # Approved plan area deviation
-    if (approved_plan_area_sqft and approved_plan_area_sqft > 0
-            and built_up_area and built_up_area > 0):
-        deviation = abs(built_up_area - approved_plan_area_sqft) / approved_plan_area_sqft
-        if deviation > 0.10:
-            f *= REGULATORY_HAIRCUTS["plan_deviation_gt10pct"]
-
-    return clamp(f, 0.40, 1.00)
-
-
 # §20.1 — Data completeness
 def compute_q_data(input_data: dict) -> float:
     mandatory = ["address_or_coords", "property_type", "sub_type", "built_up_area_sqft", "age_years"]
     optional = ["floor", "ownership", "title_clear", "occupancy", "monthly_rent",
-                "exterior_image_url", "interior_image_url",
-                "rera_registered", "occupancy_certificate", "encumbrance_status",
-                "loan_amount_requested"]
+                "exterior_image_url", "interior_image_url"]
     m_present = sum(1 for f in mandatory if input_data.get(f) is not None)
     o_present = sum(1 for f in optional if input_data.get(f) is not None)
     return 0.60 * (m_present / len(mandatory)) + 0.40 * (o_present / len(optional))

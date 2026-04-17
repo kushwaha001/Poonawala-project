@@ -497,3 +497,119 @@ async def call_claude(system: str, user: str, images: list = None,
 async def call_claude_json(system: str, user: str, temperature: float = 0.2) -> dict:
     result = await call_llm_json(system, user, {}, temperature)
     return result if result else {"fallback": True}
+
+
+# ─── CHATBOT ─────────────────────────────────────────────────────────
+
+_CHAT_SYSTEM = """You are an AI property valuation assistant for Poonawalla Fincorp.
+Your role: help users get a real estate collateral estimate by gathering property details conversationally.
+
+REQUIRED fields to trigger a valuation:
+  - city (string)
+  - locality / area name (string)
+  - property_type: residential | commercial | industrial
+  - sub_type: apartment | villa | plot | shop | office | warehouse
+  - built_up_area_sqft (number)
+  - age_years (number)
+
+OPTIONAL fields (ask only if not provided):
+  - configuration (1BHK, 2BHK, 3BHK, 4BHK)
+  - floor, total_floors, has_lift
+  - ownership (freehold / leasehold), title_clear (true/false)
+  - monthly_rent, occupancy
+  - rera_registered (true/false)
+  - builder_name
+
+INSTRUCTIONS:
+1. Extract any property fields mentioned in the user's message.
+2. If all required fields are present → set trigger_valuation=true.
+3. If required fields are missing → ask for ONE missing field at a time conversationally.
+4. Be concise, friendly, and professional. Reference Indian real estate context.
+5. Never invent property values or estimates yourself — the pipeline does that.
+
+Respond ONLY with valid JSON matching this schema:
+{
+  "reply": "your conversational message to the user",
+  "extracted_fields": {
+    "city": null,
+    "locality": null,
+    "property_type": null,
+    "sub_type": null,
+    "built_up_area_sqft": null,
+    "age_years": null,
+    "configuration": null,
+    "floor": null,
+    "total_floors": null,
+    "has_lift": null,
+    "ownership": null,
+    "title_clear": null,
+    "monthly_rent": null,
+    "occupancy": null,
+    "rera_registered": null,
+    "builder_name": null
+  },
+  "trigger_valuation": false,
+  "missing_required": ["list of still-missing required field names"]
+}
+Only include non-null values in extracted_fields for fields explicitly mentioned."""
+
+
+async def chat_with_user(message: str, history: list[dict]) -> dict:
+    """
+    Conversational chatbot for property valuation.
+    history: list of {"role": "user"|"assistant", "content": str}
+    Returns: {"reply": str, "extracted_fields": dict, "trigger_valuation": bool, "missing_required": list}
+    """
+    # Build context from history (last 8 turns to stay within token budget)
+    context_lines = []
+    for turn in history[-8:]:
+        role = turn.get("role", "user")
+        content = turn.get("content", "")
+        context_lines.append(f"{role.upper()}: {content}")
+
+    history_text = "\n".join(context_lines)
+    user_prompt = f"""CONVERSATION SO FAR:
+{history_text}
+
+NEW MESSAGE: {message}
+
+Extract fields and respond per your instructions."""
+
+    try:
+        async with httpx.AsyncClient(timeout=LLM_TIMEOUT) as client:
+            messages = [{"role": "system", "content": _CHAT_SYSTEM}]
+            for turn in history[-8:]:
+                messages.append({"role": turn.get("role", "user"), "content": turn.get("content", "")})
+            messages.append({"role": "user", "content": message})
+
+            resp = await client.post(
+                f"{OLLAMA_BASE}/v1/chat/completions",
+                json={"model": OLLAMA_MODEL, "messages": messages, "temperature": 0.3, "stream": False},
+            )
+            resp.raise_for_status()
+            raw = resp.json()["choices"][0]["message"]["content"]
+    except Exception:
+        return {
+            "reply": "I'm having trouble connecting to the AI engine right now. Please use the form on the left to enter property details and click VALUATE.",
+            "extracted_fields": {},
+            "trigger_valuation": False,
+            "missing_required": [],
+        }
+
+    parsed = _parse_json(raw)
+    if parsed and "reply" in parsed:
+        # Clean up nulls from extracted_fields
+        ef = {k: v for k, v in (parsed.get("extracted_fields") or {}).items() if v is not None}
+        return {
+            "reply": parsed.get("reply", ""),
+            "extracted_fields": ef,
+            "trigger_valuation": bool(parsed.get("trigger_valuation", False)),
+            "missing_required": parsed.get("missing_required", []),
+        }
+
+    return {
+        "reply": raw or "I couldn't process that. Could you describe the property — city, area, type, size, and age?",
+        "extracted_fields": {},
+        "trigger_valuation": False,
+        "missing_required": [],
+    }

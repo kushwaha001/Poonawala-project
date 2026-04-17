@@ -5,10 +5,7 @@ and produces an intelligent, defensible collateral assessment.
 """
 from app.agents.base import BaseAgent
 from app.tools.llm import synthesize_valuation
-from app.math.formulas import (
-    confidence_label,
-    compute_forced_sale_value, compute_realizable_value, compute_reconstruction_value,
-)
+from app.math.formulas import confidence_label
 
 
 class SynthesizerAgent(BaseAgent):
@@ -28,12 +25,6 @@ class SynthesizerAgent(BaseAgent):
 
         mv_range = val["mv_range"]
         distress_range = liq["distress_value_range"]
-        mv_mid = (mv_range[0] + mv_range[1]) / 2
-        forced_sale_value    = compute_forced_sale_value(mv_mid)
-        realizable_value     = compute_realizable_value(mv_mid)
-        reconstruction_value = compute_reconstruction_value(
-            inp["built_up_area_sqft"], inp["age_years"], loc["city_tier"], inp["sub_type"]
-        )
         rpi = liq["rpi"]
         ttl = liq["estimated_time_to_sell_days"]
         confidence = val["confidence_score"]
@@ -157,9 +148,6 @@ class SynthesizerAgent(BaseAgent):
         return {
             "market_value_range": mv_range,
             "distress_value_range": distress_range,
-            "forced_sale_value": forced_sale_value,
-            "realizable_value": realizable_value,
-            "reconstruction_value": reconstruction_value,
             "resale_potential_index": rpi,
             "estimated_time_to_sell_days": ttl,
             "confidence_score": round(confidence, 2),
@@ -319,33 +307,10 @@ class SynthesizerAgent(BaseAgent):
             "seasonal_factor": macro.get("seasonal_factor", 1.0) if macro else 1.0,
         }
 
-        # Income analysis insight (from valuation agent)
-        income_insight = val.get("income_analysis")  # None when not rented
-
-        # Legal compliance insight
-        legal_insight = {
-            "title": "Legal & Compliance",
-            "legal_risk_category":  legal.get("legal_risk_category", "amber"),
-            "f_legal":              legal.get("f_legal", 0.95),
-            "f_regulatory":         legal.get("f_regulatory", 1.0),
-            "legal_multiplier":     legal.get("legal_multiplier", 0.95),
-            "ownership":            legal.get("ownership", "unknown"),
-            "title_status":         legal.get("title_status", "unknown"),
-            "encumbrance_status":   legal.get("encumbrance_status", "unknown"),
-            "rera_registered":      legal.get("rera_registered"),
-            "occupancy_certificate": legal.get("occupancy_certificate"),
-            "completion_certificate": legal.get("completion_certificate"),
-            "litigation_pending":   legal.get("litigation_pending"),
-            "plan_deviation_pct":   legal.get("plan_deviation_pct"),
-            "warnings":             legal.get("warnings", []),
-        }
-
         return {
-            "location":         location_insight,
-            "property":         property_insight,
-            "market":           market_insight,
-            "fraud":            fraud_insight,
-            "valuation":        valuation_insight,
-            "income":           income_insight,
-            "legal_compliance": legal_insight,
+            "location": location_insight,
+            "property": property_insight,
+            "market": market_insight,
+            "fraud": fraud_insight,
+            "valuation": valuation_insight,
         }

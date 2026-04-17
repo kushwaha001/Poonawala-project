@@ -26,23 +26,8 @@ class PropertyInput(BaseModel):
     exterior_image_url: Optional[str] = None
     interior_image_url: Optional[str] = None
     declared_value: Optional[float] = None
-
-    # ── Legal & Regulatory Compliance ──────────────────────────────────
-    rera_registered: Optional[bool] = None           # RERA Act 2016
-    occupancy_certificate: Optional[bool] = None     # OC from local authority
-    completion_certificate: Optional[bool] = None    # CC from competent authority
-    encumbrance_status: Optional[Literal[
-        "clear", "existing_mortgage", "attachment_order", "disputed"
-    ]] = None
-    litigation_pending: Optional[bool] = None        # Active court case / injunction
-    approved_plan_area_sqft: Optional[float] = None  # Sanctioned plan area
-
-    # ── Rental Income Parameters ────────────────────────────────────────
-    vacancy_rate_pct: Optional[float] = None   # % vacancy; default: tier/type-specific
-    opex_ratio_pct: Optional[float] = None     # % of gross rent as operating expenses
-
-    # ── Loan Parameters ─────────────────────────────────────────────────
-    loan_amount_requested: Optional[float] = None
+    rera_registered: Optional[bool] = None
+    builder_name: Optional[str] = None
 
     @model_validator(mode="after")
     def check_location(self):
@@ -67,9 +52,6 @@ class RiskFlag(BaseModel):
 class ValuationOutput(BaseModel):
     market_value_range: list[int]
     distress_value_range: list[int]
-    forced_sale_value: Optional[int] = None
-    realizable_value: Optional[int] = None
-    reconstruction_value: Optional[int] = None
     resale_potential_index: int
     estimated_time_to_sell_days: list[int]
     confidence_score: float

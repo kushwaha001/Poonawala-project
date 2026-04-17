@@ -11,43 +11,22 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).parent.parent / "data"
 
-# Module-level cache — CSV is read once for the lifetime of the process
-_locality_norms_df = None
-_mode_area_cache: dict = {}
-
-
-def _get_locality_norms():
-    global _locality_norms_df
-    if _locality_norms_df is None:
-        try:
-            _locality_norms_df = pd.read_csv(DATA_DIR / "locality_norms.csv")
-        except Exception:
-            _locality_norms_df = pd.DataFrame()
-    return _locality_norms_df
-
 
 def _load_mode_area(city: str, locality: str, sub_type: str) -> float:
-    key = (city.strip().lower(), locality.strip().lower(), sub_type.strip().lower())
-    if key in _mode_area_cache:
-        return _mode_area_cache[key]
     try:
-        df = _get_locality_norms()
+        df = pd.read_csv(DATA_DIR / "locality_norms.csv")
         match = df[
-            (df["city"].str.lower() == key[0]) &
-            (df["locality"].str.lower() == key[1]) &
-            (df["sub_type"].str.lower() == key[2])
+            (df["city"].str.lower() == city.strip().lower()) &
+            (df["locality"].str.lower() == locality.strip().lower()) &
+            (df["sub_type"].str.lower() == sub_type.strip().lower())
         ]
         if not match.empty:
-            result = float(match.iloc[0]["mode_area_sqft"])
-            _mode_area_cache[key] = result
-            return result
+            return float(match.iloc[0]["mode_area_sqft"])
     except Exception:
         pass
     defaults = {"apartment": 900, "villa": 2000, "plot": 1500,
                 "shop": 400, "warehouse": 3000, "office": 1200, "other": 1000}
-    result = defaults.get(sub_type, 1000)
-    _mode_area_cache[key] = result
-    return result
+    return defaults.get(sub_type, 1000)
 
 
 class PropertyCharAgent(BaseAgent):
